@@ -1,1 +1,3 @@
-export const tools = [];
+import { Tool } from "@/types/tool";
+
+export const tools: Tool[] = [];

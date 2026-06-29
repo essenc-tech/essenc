@@ -1,11 +1,16 @@
 import { LucideIcon } from "lucide-react";
 
-export interface Workspace {
+export interface Tool {
   id: string;
   slug: string;
+
   title: string;
+
   description: string;
+
+  workspace: string;
+
   icon: LucideIcon;
-  color: string;
+
   featured?: boolean;
 }

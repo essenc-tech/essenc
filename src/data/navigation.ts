@@ -1,1 +1,11 @@
-export const navigation = [];
+export const navigation = [
+  {
+    title: "Workspaces",
+    href: "/workspaces",
+  },
+
+  {
+    title: "Tools",
+    href: "/tools",
+  },
+];
