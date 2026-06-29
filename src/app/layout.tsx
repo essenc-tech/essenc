@@ -1,45 +1,34 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import './globals.css';
+import SearchProvider from '@/features/search/search-provider';
+import ThemeProvider from '@/components/providers/theme-provider';
 
-import { ThemeProvider } from "@/components/providers/theme-provider";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-sans",
+const inter = Inter({ 
+  subsets: ['latin'],
+  variable: '--font-inter',
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://essenc.tech"),
-  title: {
-    default: "Essenc",
-    template: "%s • Essenc",
+  title: 'Essenc — The Connected Workspace',
+  description: 'All your tools. One workspace.',
+  icons: {
+    icon: '/favicon.ico',
   },
-  description:
-    "Beautiful browser workspaces. Fast, private and free online tools.",
-  applicationName: "Essenc",
-  keywords: [
-    "tools",
-    "browser tools",
-    "image tools",
-    "text tools",
-    "developer tools",
-  ],
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-    >
-      <body className={`${inter.variable} antialiased`}>
+    <html lang="en" className="dark" suppressHydrationWarning>
+      <body className={`${inter.variable} font-sans antialiased bg-[#0a0a0a] text-white`}>
         <ThemeProvider>
-          {children}
+          <SearchProvider>
+            {children}
+          </SearchProvider>
         </ThemeProvider>
       </body>
     </html>

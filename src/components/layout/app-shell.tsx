@@ -1,21 +1,14 @@
-import { ReactNode } from "react";
+import Navbar from '@/components/navigation/navbar';
+import Footer from '@/features/home/footer';
 
-import { Navbar } from "@/components/navigation/navbar";
-
-interface AppShellProps {
-  children: ReactNode;
-}
-
-export function AppShell({
-  children,
-}: AppShellProps) {
+export default function AppShell({ children }: { children: React.ReactNode }) {
   return (
-    <>
+    <div className="min-h-screen flex flex-col">
       <Navbar />
-
-      <main className="min-h-screen">
+      <main className="flex-1">
         {children}
       </main>
-    </>
+      <Footer />
+    </div>
   );
 }

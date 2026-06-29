@@ -1,7 +1,10 @@
 export const siteConfig = {
-  name: "Essenc",
-  description:
-    "Beautiful browser workspaces.",
-  url: "https://essenc.tech",
-  creator: "Essenc",
-};
+  name: 'Essenc',
+  url: 'https://essenc.app',
+  description: 'The connected workspace for modern builders.',
+  ogImage: '/og-home.jpg',
+  links: {
+    twitter: 'https://x.com/essenc',
+    github: 'https://github.com/essenc',
+  },
+} as const;

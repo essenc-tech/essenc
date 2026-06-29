@@ -1,27 +1,17 @@
-import { cn } from "@/lib/utils";
+import { ReactNode } from 'react';
 
-interface PageHeaderProps {
+type PageHeaderProps = {
   title: string;
   description?: string;
-  className?: string;
-}
+  children?: ReactNode;
+};
 
-export function PageHeader({
-  title,
-  description,
-  className,
-}: PageHeaderProps) {
+export default function PageHeader({ title, description, children }: PageHeaderProps) {
   return (
-    <div className={cn("space-y-3", className)}>
-      <h1 className="text-4xl font-bold tracking-tight">
-        {title}
-      </h1>
-
-      {description && (
-        <p className="max-w-2xl text-muted-foreground">
-          {description}
-        </p>
-      )}
+    <div className="pt-20 pb-12">
+      <h1 className="text-6xl font-semibold tracking-tight mb-4">{title}</h1>
+      {description && <p className="text-xl text-zinc-400 max-w-2xl">{description}</p>}
+      {children}
     </div>
   );
 }

@@ -1,26 +1,42 @@
-import Link from "next/link";
+'use client';
 
-import { navigation } from "@/data/navigation";
-import { Logo } from "./logo";
+import Link from 'next/link';
+import Logo from './logo';
+import SearchBar from '@/features/search/search-bar';
 
-export function Navbar() {
+export default function Navbar() {
   return (
-    <header className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 lg:px-8">
-        <Logo />
+    <nav className="border-b border-zinc-800 bg-[#0a0a0a]/95 backdrop-blur-lg sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-8">
+        <div className="h-20 flex items-center justify-between">
+          {/* Left */}
+          <div className="flex items-center gap-12">
+            <Logo />
+            
+            <div className="hidden md:flex items-center gap-8 text-sm font-medium">
+              <Link href="/workspaces" className="hover:text-white transition-colors">Workspaces</Link>
+              <Link href="/tools" className="hover:text-white transition-colors">Tools</Link>
+            </div>
+          </div>
 
-        <nav className="flex items-center gap-6">
-          {navigation.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+          {/* Center Search */}
+          <div className="flex-1 max-w-2xl mx-8 hidden md:block">
+            <SearchBar />
+          </div>
+
+          {/* Right */}
+          <div className="flex items-center gap-6">
+            <Link href="/login" className="hidden md:block text-sm hover:text-white transition">Log in</Link>
+            
+            <Link 
+              href="/signup" 
+              className="bg-white hover:bg-lime-400 text-black px-8 py-3 rounded-2xl text-sm font-medium transition-all active:scale-[0.98]"
             >
-              {item.title}
+              Get started free
             </Link>
-          ))}
-        </nav>
+          </div>
+        </div>
       </div>
-    </header>
+    </nav>
   );
 }

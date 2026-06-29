@@ -1,21 +1,13 @@
-interface ToolHeaderProps {
+type ToolHeaderProps = {
   title: string;
   description: string;
-}
+};
 
-export function ToolHeader({
-  title,
-  description,
-}: ToolHeaderProps) {
+export default function ToolHeader({ title, description }: ToolHeaderProps) {
   return (
-    <div className="space-y-3">
-      <h1 className="text-4xl font-bold tracking-tight">
-        {title}
-      </h1>
-
-      <p className="max-w-3xl text-muted-foreground">
-        {description}
-      </p>
+    <div className="mb-12">
+      <h1 className="text-5xl font-semibold tracking-tight mb-4">{title}</h1>
+      <p className="text-xl text-zinc-400 max-w-2xl">{description}</p>
     </div>
   );
 }
