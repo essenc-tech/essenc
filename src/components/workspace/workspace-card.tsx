@@ -1,5 +1,5 @@
 import { Card } from "@/components/ui/card";
-import { Workspace } from "@/types/workspace";
+import { Workspace } from "@/registry/workspace";
 
 interface WorkspaceCardProps {
   workspace: Workspace;
