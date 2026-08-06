@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QuickBill — Professional Windows Billing Software</title>
+  <meta name="description"
+    content="QuickBill is an offline desktop billing and inventory management software built in Python for retail stores." />
+
+  <!-- Inter Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            background: '#09090B',
+            card: '#111113',
+            border: '#27272A',
+            foreground: '#FAFAFA',
+            secondary: '#A1A1AA',
+            accent: '#3B82F6',
+            green: '#22C55E',
+          },
+          boxShadow: {
+            'soft': '0 0 0 1px rgba(39, 39, 42, 0.6), 0 4px 24px -4px rgba(0, 0, 0, 0.4)',
+            'glow': '0 0 40px -8px rgba(59, 130, 246, 0.25)',
+            'card-hover': '0 0 0 1px rgba(59, 130, 246, 0.3), 0 12px 40px -8px rgba(0, 0, 0, 0.5)',
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@0.469.0"></script>
+
+  <style>
+    body {
+      background-color: #09090B;
+      color: #FAFAFA;
+    }
+
+    /* Soft blue ambient glow */
+    .hero-glow {
+      background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(59, 130, 246, 0.12), transparent);
+    }
+
+    /* Fade-in on load */
+    .fade-in {
+      animation: fadeIn 0.7s ease-out forwards;
+      opacity: 0;
+    }
+
+    .fade-in-delay-1 {
+      animation-delay: 0.1s;
+    }
+
+    .fade-in-delay-2 {
+      animation-delay: 0.2s;
+    }
+
+    .fade-in-delay-3 {
+      animation-delay: 0.3s;
+    }
+
+    .fade-in-delay-4 {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Card lift */
+    .card-lift {
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+
+    .card-lift:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.25), 0 16px 48px -12px rgba(0, 0, 0, 0.55);
+    }
+
+    /* Navbar blur */
+    .nav-blur {
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      background-color: rgba(9, 9, 11, 0.75);
+    }
+
+    /* Button transitions */
+    .btn-primary {
+      transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 0 24px -4px rgba(59, 130, 246, 0.45);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+
+    /* Screenshot placeholder subtle gradient */
+    .screenshot-placeholder {
+      background: linear-gradient(145deg, #161618 0%, #111113 100%);
+    }
+  </style>
+</head>
+
+<body class="font-sans antialiased selection:bg-accent/30 selection:text-foreground">
+
+  <!-- ==================== NAVBAR ==================== -->
+  <nav class="fixed top-0 left-0 right-0 z-50 nav-blur border-b border-border">
+    <div class="mx-auto max-w-[1200px] px-6 h-14 flex items-center justify-between">
+      <a href="https://essenc.tech/"
+        class="text-sm font-semibold tracking-tight text-foreground hover:text-foreground/90 transition-colors">
+        ESSENC
+      </a>
+      <div class="flex items-center gap-6">
+        <a href="/index.html#softwares"
+          class="text-sm text-secondary hover:text-foreground transition-colors">Softwares</a>
+        <a href="https://github.com/kartikbansode"
+          class="text-sm text-secondary hover:text-foreground transition-colors">GitHub</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ==================== MAIN ==================== -->
+  <main class="pt-14">
+
+    <!-- ==================== HERO ==================== -->
+    <section class="relative hero-glow">
+      <div class="mx-auto max-w-[1200px] px-6 pt-20 pb-16 md:pt-28 md:pb-24">
+        <div class="fade-in card-lift rounded-2xl border border-border bg-card p-8 md:p-12 shadow-soft">
+          <div class="flex flex-col gap-8">
+            <!-- Title + badges -->
+            <div class="space-y-5">
+              <div class="flex flex-wrap items-center gap-3">
+                <h1 class="text-3xl md:text-4xl font-semibold tracking-tight text-foreground">
+                  QuickBill
+                </h1>
+                <span
+                  class="inline-flex items-center rounded-full border border-border bg-background/60 px-2.5 py-0.5 text-xs font-medium text-secondary">
+                  v1.0.0
+                </span>
+              </div>
+              <p class="text-lg text-secondary font-medium">
+                Professional Windows Billing Software
+              </p>
+              <p class="max-w-2xl text-[15px] leading-relaxed text-secondary">
+                QuickBill is an offline desktop billing and inventory management software built in Python for retail
+                stores. It includes barcode scanning, PDF invoice generation, inventory management, professional
+                installer and modern Windows application packaging.
+              </p>
+            </div>
+
+            <!-- Badges -->
+            <div class="flex flex-wrap gap-2">
+              <span
+                class="inline-flex items-center gap-1.5 rounded-lg border border-border bg-background/50 px-3 py-1.5 text-xs font-medium text-secondary">
+                <i data-lucide="code-2" class="w-3.5 h-3.5 text-accent"></i>
+                Python
+              </span>
+              <span
+                class="inline-flex items-center gap-1.5 rounded-lg border border-border bg-background/50 px-3 py-1.5 text-xs font-medium text-secondary">
+                <i data-lucide="monitor" class="w-3.5 h-3.5 text-accent"></i>
+                Windows
+              </span>
+              <span
+                class="inline-flex items-center gap-1.5 rounded-lg border border-border bg-background/50 px-3 py-1.5 text-xs font-medium text-secondary">
+                <i data-lucide="wifi-off" class="w-3.5 h-3.5 text-accent"></i>
+                Offline
+              </span>
+              <span
+                class="inline-flex items-center gap-1.5 rounded-lg border border-border bg-background/50 px-3 py-1.5 text-xs font-medium text-secondary">
+                <i data-lucide="git-branch" class="w-3.5 h-3.5 text-accent"></i>
+                Open Source
+              </span>
+              <span
+                class="inline-flex items-center gap-1.5 rounded-lg border border-border bg-background/50 px-3 py-1.5 text-xs font-medium text-secondary">
+                <i data-lucide="scale" class="w-3.5 h-3.5 text-accent"></i>
+                MIT License
+              </span>
+            </div>
+
+            <!-- CTAs -->
+            <div class="flex flex-wrap items-center gap-3 pt-1">
+              <a href="/softwares/quickbill/QuickBill_Setup_v1.0.0.exe"
+                class="btn-primary inline-flex items-center gap-2 rounded-xl bg-accent px-5 py-2.5 text-sm font-medium text-white shadow-glow">
+                <i data-lucide="download" class="w-4 h-4"></i>
+                Download Setup
+                <span class="ml-1 rounded-md bg-white/15 px-1.5 py-0.5 text-[11px] font-medium text-white/90">Windows ·
+                  v1.0.0</span>
+              </a>
+              <a href="https://github.com/kartikbansode/quickbill"
+                class="btn-secondary inline-flex items-center gap-2 rounded-xl border border-border bg-transparent px-5 py-2.5 text-sm font-medium text-secondary hover:border-secondary/50 hover:text-foreground hover:bg-white/5">
+                <i data-lucide="github" class="w-4 h-4"></i>
+                GitHub
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+    <!-- 
+    <section class="mx-auto max-w-[1200px] px-6 py-16 md:py-20">
+      <div class="mb-10 fade-in fade-in-delay-1">
+        <h2 class="text-xl font-semibold tracking-tight text-foreground">Screenshots</h2>
+        <p class="mt-2 text-sm text-secondary">A quick look at the interface and generated outputs.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+        <div
+          class="card-lift fade-in fade-in-delay-1 group rounded-2xl border border-border bg-card overflow-hidden shadow-soft">
+          <div
+            class="screenshot-placeholder aspect-[4/3] flex flex-col items-center justify-center gap-3 border-b border-border">
+            <div class="rounded-xl border border-border bg-background/80 p-3.5">
+              <img src="/softwares/quickbill/1.png" alt="Billing Dashboard">
+            </div>
+
+          </div>
+          <div class="px-5 py-4">
+            <h3 class="text-sm font-medium text-foreground">Billing Dashboard</h3>
+            <p class="mt-1 text-xs text-secondary">Main workspace for creating and managing bills.</p>
+          </div>
+        </div>
+
+       
+        <div
+          class="card-lift fade-in fade-in-delay-2 group rounded-2xl border border-border bg-card overflow-hidden shadow-soft">
+          <div
+            class="screenshot-placeholder aspect-[4/3] flex flex-col items-center justify-center gap-3 border-b border-border">
+            <div
+              class="screenshot-placeholder aspect-[4/3] flex flex-col items-center justify-center gap-3 border-b border-border">
+              <div class="rounded-xl border border-border bg-background/80 p-3.5">
+                <img src="/softwares/quickbill/2.png" alt="Invoice PDF">
+              </div>
+
+            </div>
+          </div>
+          <div class="px-5 py-4">
+            <h3 class="text-sm font-medium text-foreground">Product Dashboard</h3>
+            <p class="mt-1 text-xs text-secondary">Manage your product catalog with ease.</p>
+          </div>
+        </div>
+
+ 
+        <div
+          class="card-lift fade-in fade-in-delay-2 group rounded-2xl border border-border bg-card overflow-hidden shadow-soft">
+          <div
+            class="screenshot-placeholder aspect-[4/3] flex flex-col items-center justify-center gap-3 border-b border-border">
+            <div
+              class="screenshot-placeholder aspect-[4/3] flex flex-col items-center justify-center gap-3 border-b border-border">
+              <div class="rounded-xl border border-border bg-background/80 p-3.5">
+                <img src="/softwares/quickbill/3.png" alt="Invoice PDF">
+              </div>
+
+            </div>
+          </div>
+          <div class="px-5 py-4">
+            <h3 class="text-sm font-medium text-foreground">Invoice PDF</h3>
+            <p class="mt-1 text-xs text-secondary">Generate and print professional invoices with ease.</p>
+          </div>
+        </div>
+      </div>
+    </section> -->
+
+    <!-- ==================== FEATURES ==================== -->
+    <section class="mx-auto max-w-[1200px] px-6 py-16 md:py-20 border-t border-border">
+      <div class="mb-10 fade-in">
+        <h2 class="text-xl font-semibold tracking-tight text-foreground">Features</h2>
+        <p class="mt-2 text-sm text-secondary">Everything you need for day-to-day retail billing and inventory.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Feature cards -->
+        <div class="card-lift rounded-xl border border-border bg-card p-5 shadow-soft">
+          <div class="flex items-start gap-3.5">
+            <div class="mt-0.5 rounded-lg border border-border bg-background/60 p-2">
+              <i data-lucide="scan-barcode" class="w-4 h-4 text-accent"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-medium text-foreground">Barcode Scanner</h3>
+              <p class="mt-1 text-xs leading-relaxed text-secondary">Scan products instantly with webcam or USB barcode
+                scanners.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-lift rounded-xl border border-border bg-card p-5 shadow-soft">
+          <div class="flex items-start gap-3.5">
+            <div class="mt-0.5 rounded-lg border border-border bg-background/60 p-2">
+              <i data-lucide="package" class="w-4 h-4 text-accent"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-medium text-foreground">Inventory Management</h3>
+              <p class="mt-1 text-xs leading-relaxed text-secondary">Track stock levels, low-stock alerts, and product
+                movement.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-lift rounded-xl border border-border bg-card p-5 shadow-soft">
+          <div class="flex items-start gap-3.5">
+            <div class="mt-0.5 rounded-lg border border-border bg-background/60 p-2">
+              <i data-lucide="boxes" class="w-4 h-4 text-accent"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-medium text-foreground">Product Management</h3>
+              <p class="mt-1 text-xs leading-relaxed text-secondary">Add, edit, and organize products with categories
+                and pricing.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-lift rounded-xl border border-border bg-card p-5 shadow-soft">
+          <div class="flex items-start gap-3.5">
+            <div class="mt-0.5 rounded-lg border border-border bg-background/60 p-2">
+              <i data-lucide="file-text" class="w-4 h-4 text-accent"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-medium text-foreground">Professional PDF Bills</h3>
+              <p class="mt-1 text-xs leading-relaxed text-secondary">Generate clean, printable invoices with your store
+                branding.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-lift rounded-xl border border-border bg-card p-5 shadow-soft">
+          <div class="flex items-start gap-3.5">
+            <div class="mt-0.5 rounded-lg border border-border bg-background/60 p-2">
+              <i data-lucide="history" class="w-4 h-4 text-accent"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-medium text-foreground">Bill History</h3>
+              <p class="mt-1 text-xs leading-relaxed text-secondary">Search and review past bills with quick reprint
+                support.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-lift rounded-xl border border-border bg-card p-5 shadow-soft">
+          <div class="flex items-start gap-3.5">
+            <div class="mt-0.5 rounded-lg border border-border bg-background/60 p-2">
+              <i data-lucide="pause-circle" class="w-4 h-4 text-accent"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-medium text-foreground">Hold Bills</h3>
+              <p class="mt-1 text-xs leading-relaxed text-secondary">Park incomplete bills and resume them whenever
+                needed.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-lift rounded-xl border border-border bg-card p-5 shadow-soft">
+          <div class="flex items-start gap-3.5">
+            <div class="mt-0.5 rounded-lg border border-border bg-background/60 p-2">
+              <i data-lucide="tag" class="w-4 h-4 text-accent"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-medium text-foreground">Barcode Labels</h3>
+              <p class="mt-1 text-xs leading-relaxed text-secondary">Print product labels with barcodes for shelves and
+                packaging.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-lift rounded-xl border border-border bg-card p-5 shadow-soft">
+          <div class="flex items-start gap-3.5">
+            <div class="mt-0.5 rounded-lg border border-border bg-background/60 p-2">
+              <i data-lucide="wifi-off" class="w-4 h-4 text-accent"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-medium text-foreground">Offline First</h3>
+              <p class="mt-1 text-xs leading-relaxed text-secondary">Works completely offline — no internet required to
+                run.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-lift rounded-xl border border-border bg-card p-5 shadow-soft">
+          <div class="flex items-start gap-3.5">
+            <div class="mt-0.5 rounded-lg border border-border bg-background/60 p-2">
+              <i data-lucide="hard-drive-download" class="w-4 h-4 text-accent"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-medium text-foreground">Windows Installer</h3>
+              <p class="mt-1 text-xs leading-relaxed text-secondary">Professional setup wizard for clean installation on
+                Windows.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-lift rounded-xl border border-border bg-card p-5 shadow-soft">
+          <div class="flex items-start gap-3.5">
+            <div class="mt-0.5 rounded-lg border border-border bg-background/60 p-2">
+              <i data-lucide="zap" class="w-4 h-4 text-accent"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-medium text-foreground">Fast & Lightweight</h3>
+              <p class="mt-1 text-xs leading-relaxed text-secondary">Snappy performance with a small footprint on your
+                system.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-lift rounded-xl border border-border bg-card p-5 shadow-soft">
+          <div class="flex items-start gap-3.5">
+            <div class="mt-0.5 rounded-lg border border-border bg-background/60 p-2">
+              <i data-lucide="database" class="w-4 h-4 text-accent"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-medium text-foreground">Local Storage</h3>
+              <p class="mt-1 text-xs leading-relaxed text-secondary">All data stays on your machine using simple local
+                storage.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-lift rounded-xl border border-border bg-card p-5 shadow-soft">
+          <div class="flex items-start gap-3.5">
+            <div class="mt-0.5 rounded-lg border border-border bg-background/60 p-2">
+              <i data-lucide="git-branch" class="w-4 h-4 text-accent"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-medium text-foreground">Open Source</h3>
+              <p class="mt-1 text-xs leading-relaxed text-secondary">Fully open source under the MIT license. Inspect
+                and contribute.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TECH STACK ==================== -->
+    <section class="mx-auto max-w-[1200px] px-6 py-16 md:py-20 border-t border-border">
+      <div class="mb-8 fade-in">
+        <h2 class="text-xl font-semibold tracking-tight text-foreground">Tech Stack</h2>
+        <p class="mt-2 text-sm text-secondary">Built with reliable, proven tools for desktop applications.</p>
+      </div>
+
+      <div class="flex flex-wrap gap-2.5">
+        <span
+          class="inline-flex items-center rounded-lg border border-border bg-card px-3.5 py-2 text-sm font-medium text-secondary hover:border-accent/40 hover:text-foreground transition-colors">Python</span>
+        <span
+          class="inline-flex items-center rounded-lg border border-border bg-card px-3.5 py-2 text-sm font-medium text-secondary hover:border-accent/40 hover:text-foreground transition-colors">Tkinter</span>
+        <span
+          class="inline-flex items-center rounded-lg border border-border bg-card px-3.5 py-2 text-sm font-medium text-secondary hover:border-accent/40 hover:text-foreground transition-colors">OpenCV</span>
+        <span
+          class="inline-flex items-center rounded-lg border border-border bg-card px-3.5 py-2 text-sm font-medium text-secondary hover:border-accent/40 hover:text-foreground transition-colors">ReportLab</span>
+        <span
+          class="inline-flex items-center rounded-lg border border-border bg-card px-3.5 py-2 text-sm font-medium text-secondary hover:border-accent/40 hover:text-foreground transition-colors">PyInstaller</span>
+        <span
+          class="inline-flex items-center rounded-lg border border-border bg-card px-3.5 py-2 text-sm font-medium text-secondary hover:border-accent/40 hover:text-foreground transition-colors">Inno
+          Setup</span>
+        <span
+          class="inline-flex items-center rounded-lg border border-border bg-card px-3.5 py-2 text-sm font-medium text-secondary hover:border-accent/40 hover:text-foreground transition-colors">JSON</span>
+        <span
+          class="inline-flex items-center rounded-lg border border-border bg-card px-3.5 py-2 text-sm font-medium text-secondary hover:border-accent/40 hover:text-foreground transition-colors">Pyzbar</span>
+        <span
+          class="inline-flex items-center rounded-lg border border-border bg-card px-3.5 py-2 text-sm font-medium text-secondary hover:border-accent/40 hover:text-foreground transition-colors">Pygame</span>
+      </div>
+    </section>
+
+    <!-- ==================== Software INFORMATION ==================== -->
+    <section class="mx-auto max-w-[1200px] px-6 py-16 md:py-20 border-t border-border">
+      <div class="mb-8 fade-in">
+        <h2 class="text-xl font-semibold tracking-tight text-foreground">Software Information</h2>
+      </div>
+
+      <div class="card-lift rounded-2xl border border-border bg-card p-6 md:p-8 shadow-soft">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="space-y-1">
+            <p class="text-xs font-medium uppercase tracking-wider text-secondary/70">Version</p>
+            <p class="text-sm font-medium text-foreground">v1.0.0</p>
+          </div>
+          <div class="space-y-1">
+            <p class="text-xs font-medium uppercase tracking-wider text-secondary/70">Platform</p>
+            <p class="text-sm font-medium text-foreground">Windows 10/11</p>
+          </div>
+          <div class="space-y-1">
+            <p class="text-xs font-medium uppercase tracking-wider text-secondary/70">Language</p>
+            <p class="text-sm font-medium text-foreground">Python</p>
+          </div>
+          <div class="space-y-1">
+            <p class="text-xs font-medium uppercase tracking-wider text-secondary/70">Installer</p>
+            <p class="text-sm font-medium text-foreground">Professional Setup Wizard</p>
+          </div>
+          <div class="space-y-1">
+            <p class="text-xs font-medium uppercase tracking-wider text-secondary/70">License</p>
+            <p class="text-sm font-medium text-foreground">MIT</p>
+          </div>
+          <div class="space-y-1">
+            <p class="text-xs font-medium uppercase tracking-wider text-secondary/70">Architecture</p>
+            <p class="text-sm font-medium text-foreground">64-bit</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== DOWNLOAD ==================== -->
+    <section id="download" class="mx-auto max-w-[1200px] px-6 py-16 md:py-24 border-t border-border">
+      <div
+        class="fade-in relative overflow-hidden rounded-2xl border border-border bg-card p-10 md:p-14 text-center shadow-soft">
+        <!-- Subtle glow -->
+        <div
+          class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(59,130,246,0.08)_0%,_transparent_70%)]">
+        </div>
+
+        <div class="relative space-y-6">
+          <div class="inline-flex items-center justify-center rounded-full border border-border bg-background/60 p-3">
+            <i data-lucide="download" class="w-6 h-6 text-accent"></i>
+          </div>
+          <div class="space-y-2">
+            <h2 class="text-2xl md:text-3xl font-semibold tracking-tight text-foreground">
+              Download QuickBill
+            </h2>
+            <p class="text-sm text-secondary max-w-md mx-auto">
+              Latest stable release with professional Windows installer.
+            </p>
+          </div>
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+            <a href="/softwares/quickbill/QuickBill_Setup_v1.0.0.exe"
+              class="btn-primary inline-flex items-center gap-2 rounded-xl bg-accent px-6 py-3 text-sm font-medium text-white shadow-glow">
+              <i data-lucide="download" class="w-4 h-4"></i>
+              Download Setup
+            </a>
+            <a href="https://github.com/kartikbansode/quickbill"
+              class="btn-secondary inline-flex items-center gap-2 rounded-xl border border-border bg-transparent px-6 py-3 text-sm font-medium text-secondary hover:border-secondary/50 hover:text-foreground hover:bg-white/5">
+              <i data-lucide="github" class="w-4 h-4"></i>
+              Source Code
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="border-t border-border">
+    <div class="mx-auto max-w-[1200px] px-6 py-10 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p class="text-sm text-secondary">
+        Built by <span class="text-foreground/90"><a href="https://kartikbansode.dev" target="_blank"
+            class="hover:text-foreground transition-colors">Kartik Bansode</a></span>
+      </p>
+      <p class="text-sm text-secondary">
+        © 2026 Essenc Technologies
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+  </script>
+</body>
+
+</html>
