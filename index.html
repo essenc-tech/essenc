@@ -122,56 +122,92 @@
       </div>
     </section>
 
-    <!-- ==================== softwares ==================== -->
-    <section id="softwares" class="mx-auto max-w-[1200px] px-6 pb-20 md:pb-28">
-      <div class="mb-8 fade-in fade-in-delay-1 flex items-center justify-between">
-        <h2 class="text-sm font-medium text-secondary uppercase tracking-wider">All softwares</h2>
-      </div>
+<!-- ==================== softwares ==================== -->
+<section id="softwares" class="mx-auto max-w-[1200px] px-6 pb-20 md:pb-28">
+  <div class="mb-8 fade-in fade-in-delay-1 flex items-center justify-between">
+    <h2 class="text-sm font-medium text-secondary uppercase tracking-wider">All softwares</h2>
+  </div>
 
-      <!-- QuickBill Card -->
-      <div class="fade-in fade-in-delay-2 card-lift rounded-2xl border border-border bg-card overflow-hidden shadow-soft max-w-2xl">
-        <div class="p-6 md:p-8">
-          <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-5">
-            <div class="space-y-4 flex-1">
-              <div class="flex items-center gap-3">
-                <div class="rounded-xl border border-border bg-background/60 p-2.5">
-                  <i data-lucide="receipt" class="w-5 h-5 text-accent"></i>
-                </div>
-                <div>
-                  <h3 class="text-lg font-semibold tracking-tight text-foreground">QuickBill</h3>
-                  <p class="text-xs text-secondary mt-0.5">v1.0.0 · Windows · Offline</p>
-                </div>
-              </div>
-
-              <p class="text-sm leading-relaxed text-secondary max-w-md">
-                Professional offline desktop billing and inventory software for retail stores. Barcode scanning, PDF invoices, and a modern Windows installer.
-              </p>
-
-              <div class="flex flex-wrap gap-2">
-                <span class="inline-flex items-center rounded-md border border-border bg-background/50 px-2.5 py-1 text-xs font-medium text-secondary">Python</span>
-                <span class="inline-flex items-center rounded-md border border-border bg-background/50 px-2.5 py-1 text-xs font-medium text-secondary">Windows</span>
-                <span class="inline-flex items-center rounded-md border border-border bg-background/50 px-2.5 py-1 text-xs font-medium text-secondary">MIT</span>
-              </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+    <!-- QuickBill Card -->
+    <div class="fade-in fade-in-delay-2 card-lift rounded-2xl border border-border bg-card overflow-hidden shadow-soft">
+      <div class="p-6 md:p-8">
+        <div class="space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="rounded-xl border border-border bg-background/60 p-2.5">
+              <i data-lucide="receipt" class="w-5 h-5 text-accent"></i>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold tracking-tight text-foreground">QuickBill</h3>
+              <p class="text-xs text-secondary mt-0.5">v1.0.0 · Windows · Offline</p>
             </div>
           </div>
 
-          <!-- Actions -->
-          <div class="mt-6 pt-5 border-t border-border flex flex-wrap items-center gap-3">
-            <a href="/softwares/quickbill/quickbill.html" class="btn-secondary inline-flex items-center gap-2 rounded-xl border border-border bg-transparent px-4 py-2.5 text-sm font-medium text-secondary hover:border-secondary/50 hover:text-foreground hover:bg-white/5">
-              <i data-lucide="arrow-right" class="w-4 h-4"></i>
-              View project
-            </a>
-            <a href="https://github.com/essenc-tech/essenc/releases/download/v1.0.0/QuickBill_Setup_v1.0.0.exe"
-                class="btn-primary inline-flex items-center gap-2 rounded-xl bg-accent px-5 py-2.5 text-sm font-medium text-white shadow-glow">
-                <i data-lucide="download" class="w-4 h-4"></i>
-                Download Setup
-                <span class="ml-1 rounded-md bg-white/15 px-1.5 py-0.5 text-[11px] font-medium text-white/90">Windows ·
-                  v1.0.0</span>
-              </a>
+          <p class="text-sm leading-relaxed text-secondary">
+            Professional offline desktop billing and inventory software for retail stores. Barcode scanning, PDF invoices, and a modern Windows installer.
+          </p>
+
+          <div class="flex flex-wrap gap-2">
+            <span class="inline-flex items-center rounded-md border border-border bg-background/50 px-2.5 py-1 text-xs font-medium text-secondary">Windows</span>
           </div>
         </div>
+
+        <!-- Actions -->
+        <div class="mt-6 pt-5 border-t border-border flex flex-wrap items-center gap-3">
+          <a href="/softwares/quickbill/quickbill.html" class="btn-secondary inline-flex items-center gap-2 rounded-xl border border-border bg-transparent px-4 py-2.5 text-sm font-medium text-secondary hover:border-secondary/50 hover:text-foreground hover:bg-white/5">
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            View project
+          </a>
+          <a href="https://github.com/kartikbansode/quickbill/releases/download/v2.1.0/QuickBill_Setup_v2.1.0.exe"
+            class="btn-primary inline-flex items-center gap-2 rounded-xl bg-accent px-4 py-2.5 text-sm font-medium text-white shadow-glow">
+            <i data-lucide="download" class="w-4 h-4"></i>
+            Download
+            <span class="ml-1 rounded-md bg-white/15 px-1.5 py-0.5 text-[11px] font-medium text-white/90">Windows · v2.1.0</span>
+          </a>
+        </div>
       </div>
-    </section>
+    </div>
+
+    <!-- QuickBill Customer Display App Card -->
+    <div class="fade-in fade-in-delay-2 card-lift rounded-2xl border border-border bg-card overflow-hidden shadow-soft">
+      <div class="p-6 md:p-8">
+        <div class="space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="rounded-xl border border-border bg-background/60 p-2.5">
+              <i data-lucide="smartphone" class="w-5 h-5 text-accent"></i>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold tracking-tight text-foreground">QuickBill Customer Display</h3>
+              <p class="text-xs text-secondary mt-0.5">v1.0.0 · Android</p>
+            </div>
+          </div>
+
+          <p class="text-sm leading-relaxed text-secondary">
+            Companion Android app that shows live bill details, item list, and total on a customer-facing display during checkout.
+          </p>
+
+          <div class="flex flex-wrap gap-2">
+            <span class="inline-flex items-center rounded-md border border-border bg-background/50 px-2.5 py-1 text-xs font-medium text-secondary">Android</span>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="mt-6 pt-5 border-t border-border flex flex-wrap items-center gap-3">
+          <a href="/softwares/quickbill-customer-display-app/quickbill-customer-display-app.html" class="btn-secondary inline-flex items-center gap-2 rounded-xl border border-border bg-transparent px-4 py-2.5 text-sm font-medium text-secondary hover:border-secondary/50 hover:text-foreground hover:bg-white/5">
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            View project
+          </a>
+          <a href="https://github.com/kartikbansode/quickbill-customer-display-app/releases/download/v1.0.0/QuickBill-Customer-Display-v1.0.0.apk"
+            class="btn-primary inline-flex items-center gap-2 rounded-xl bg-accent px-4 py-2.5 text-sm font-medium text-white shadow-glow">
+            <i data-lucide="download" class="w-4 h-4"></i>
+            Download APK
+            <span class="ml-1 rounded-md bg-white/15 px-1.5 py-0.5 text-[11px] font-medium text-white/90">Android · v1.0.0</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
   </main>
 
