@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QuickBill Barcode Scanner — Android Companion App</title>
+    <meta name="description"
+        content="QuickBill Barcode Scanner is an Android companion app that allows users to scan barcodes and add items to the QuickBill desktop software for faster billing." />
+
+    <!-- Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        background: '#09090B',
+                        card: '#111113',
+                        border: '#27272A',
+                        foreground: '#FAFAFA',
+                        secondary: '#A1A1AA',
+                        accent: '#3B82F6',
+                        green: '#22C55E',
+                    },
+                    boxShadow: {
+                        'soft': '0 0 0 1px rgba(39, 39, 42, 0.6), 0 4px 24px -4px rgba(0, 0, 0, 0.4)',
+                        'glow': '0 0 40px -8px rgba(59, 130, 246, 0.25)',
+                        'card-hover': '0 0 0 1px rgba(59, 130, 246, 0.3), 0 12px 40px -8px rgba(0, 0, 0, 0.5)',
+                    },
+                },
+            },
+        };
+    </script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@0.469.0"></script>
+
+    <style>
+        body {
+            background-color: #09090B;
+            color: #FAFAFA;
+        }
+
+        .hero-glow {
+            background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(59, 130, 246, 0.12), transparent);
+        }
+
+        .fade-in {
+            animation: fadeIn 0.7s ease-out forwards;
+            opacity: 0;
+        }
+
+        .fade-in-delay-1 {
+            animation-delay: 0.1s;
+        }
+
+        .fade-in-delay-2 {
+            animation-delay: 0.2s;
+        }
+
+        .fade-in-delay-3 {
+            animation-delay: 0.3s;
+        }
+
+        .fade-in-delay-4 {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card-lift {
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+        }
+
+        .card-lift:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.25), 0 16px 48px -12px rgba(0, 0, 0, 0.55);
+        }
+
+        .nav-blur {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            background-color: rgba(9, 9, 11, 0.75);
+        }
+
+        .btn-primary {
+            transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 0 24px -4px rgba(59, 130, 246, 0.45);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+        }
+
+        .screenshot-placeholder {
+            background: linear-gradient(145deg, #161618 0%, #111113 100%);
+        }
+    </style>
+</head>
+
+<body class="font-sans antialiased selection:bg-accent/30 selection:text-foreground">
+
+    <!-- ==================== NAVBAR ==================== -->
+    <nav class="fixed top-0 left-0 right-0 z-50 nav-blur border-b border-border">
+        <div class="mx-auto max-w-[1200px] px-6 h-14 flex items-center justify-between">
+            <a href="https://essenc.tech/"
+                class="text-sm font-semibold tracking-tight text-foreground hover:text-foreground/90 transition-colors">
+                ESSENC
+            </a>
+            <div class="flex items-center gap-6">
+                <a href="/index.html#softwares"
+                    class="text-sm text-secondary hover:text-foreground transition-colors">Softwares</a>
+                <a href="https://github.com/kartikbansode"
+                    class="text-sm text-secondary hover:text-foreground transition-colors">GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ==================== MAIN ==================== -->
+    <main class="pt-14">
+
+        <!-- ==================== HERO ==================== -->
+        <section class="relative hero-glow">
+            <div class="mx-auto max-w-[1200px] px-6 pt-20 pb-16 md:pt-28 md:pb-24">
+                <div class="fade-in card-lift rounded-2xl border border-border bg-card p-8 md:p-12 shadow-soft">
+                    <div class="flex flex-col gap-8">
+                        <div class="space-y-5">
+                            <div class="flex flex-wrap items-center gap-3">
+                                <h1 class="text-3xl md:text-4xl font-semibold tracking-tight text-foreground">
+                                    QuickBill Customer Display
+                                </h1>
+                                <span
+                                    class="inline-flex items-center rounded-full border border-border bg-background/60 px-2.5 py-0.5 text-xs font-medium text-secondary">
+                                    v1.0.0
+                                </span>
+                            </div>
+                            <p class="text-lg text-secondary font-medium">
+                                Android Companion App for Live Customer Display
+                            </p>
+                            <p class="max-w-2xl text-[15px] leading-relaxed text-secondary">
+                                QuickBill Customer Display is a lightweight Android app that shows live bill details,
+                                item list, quantities, and total on a second screen during checkout. Pair it with
+                                QuickBill desktop for a professional dual-display experience in retail stores.
+                            </p>
+                        </div>
+
+                        <!-- Badges -->
+                        <div class="flex flex-wrap gap-2">
+                            <span
+                                class="inline-flex items-center gap-1.5 rounded-lg border border-border bg-background/50 px-3 py-1.5 text-xs font-medium text-secondary">
+                                <i data-lucide="smartphone" class="w-3.5 h-3.5 text-accent"></i>
+                                Android
+                            </span>
+                            <span
+                                class="inline-flex items-center gap-1.5 rounded-lg border border-border bg-background/50 px-3 py-1.5 text-xs font-medium text-secondary">
+                                <i data-lucide="wifi" class="w-3.5 h-3.5 text-accent"></i>
+                                Local Network
+                            </span>
+                            <span
+                                class="inline-flex items-center gap-1.5 rounded-lg border border-border bg-background/50 px-3 py-1.5 text-xs font-medium text-secondary">
+                                <i data-lucide="git-branch" class="w-3.5 h-3.5 text-accent"></i>
+                                Open Source
+                            </span>
+                            <span
+                                class="inline-flex items-center gap-1.5 rounded-lg border border-border bg-background/50 px-3 py-1.5 text-xs font-medium text-secondary">
+                                <i data-lucide="scale" class="w-3.5 h-3.5 text-accent"></i>
+                                MIT License
+                            </span>
+                        </div>
+
+                        <!-- CTAs -->
+                        <div class="flex flex-wrap items-center gap-3 pt-1">
+                            <a href="https://github.com/kartikbansode/quickbill-barcode-scanner-app/releases/download/v1.0.0/QuickBill-Barcode-Scanner-v1.0.0.apk"
+                                class="btn-primary inline-flex items-center gap-2 rounded-xl bg-accent px-5 py-2.5 text-sm font-medium text-white shadow-glow">
+                                <i data-lucide="download" class="w-4 h-4"></i>
+                                Download APK
+                                <span
+                                    class="ml-1 rounded-md bg-white/15 px-1.5 py-0.5 text-[11px] font-medium text-white/90">Android
+                                    · v1.0.0</span>
+                            </a>
+                            <a href="https://github.com/kartikbansode/quickbill-barcode-scanner-app"
+                                class="btn-secondary inline-flex items-center gap-2 rounded-xl border border-border bg-transparent px-5 py-2.5 text-sm font-medium text-secondary hover:border-secondary/50 hover:text-foreground hover:bg-white/5">
+                                <i data-lucide="github" class="w-4 h-4"></i>
+                                GitHub
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== FEATURES ==================== -->
+        <section class="mx-auto max-w-[1200px] px-6 py-16 md:py-20 border-t border-border">
+            <div class="mb-10 fade-in">
+                <h2 class="text-xl font-semibold tracking-tight text-foreground">Features</h2>
+                <p class="mt-2 text-sm text-secondary">Everything needed for a clean customer-facing display during
+                    billing.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="card-lift rounded-xl border border-border bg-card p-5 shadow-soft">
+                    <div class="flex items-start gap-3.5">
+                        <div class="mt-0.5 rounded-lg border border-border bg-background/60 p-2">
+                            <i data-lucide="monitor" class="w-4 h-4 text-accent"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-medium text-foreground">Live Bill Display</h3>
+                            <p class="mt-1 text-xs leading-relaxed text-secondary">Shows the current bill in real time
+                                as items are added on the main QuickBill app.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-lift rounded-xl border border-border bg-card p-5 shadow-soft">
+                    <div class="flex items-start gap-3.5">
+                        <div class="mt-0.5 rounded-lg border border-border bg-background/60 p-2">
+                            <i data-lucide="list" class="w-4 h-4 text-accent"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-medium text-foreground">Item List & Qty</h3>
+                            <p class="mt-1 text-xs leading-relaxed text-secondary">Clear list of products, quantities,
+                                and prices visible to the customer.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-lift rounded-xl border border-border bg-card p-5 shadow-soft">
+                    <div class="flex items-start gap-3.5">
+                        <div class="mt-0.5 rounded-lg border border-border bg-background/60 p-2">
+                            <i data-lucide="indian-rupee" class="w-4 h-4 text-accent"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-medium text-foreground">Running Total</h3>
+                            <p class="mt-1 text-xs leading-relaxed text-secondary">Always-visible total amount so
+                                customers can follow the bill as it grows.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-lift rounded-xl border border-border bg-card p-5 shadow-soft">
+                    <div class="flex items-start gap-3.5">
+                        <div class="mt-0.5 rounded-lg border border-border bg-background/60 p-2">
+                            <i data-lucide="wifi" class="w-4 h-4 text-accent"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-medium text-foreground">Local Network Pairing</h3>
+                            <p class="mt-1 text-xs leading-relaxed text-secondary">Connects to QuickBill desktop over
+                                the same Wi-Fi / local network.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-lift rounded-xl border border-border bg-card p-5 shadow-soft">
+                    <div class="flex items-start gap-3.5">
+                        <div class="mt-0.5 rounded-lg border border-border bg-background/60 p-2">
+                            <i data-lucide="smartphone" class="w-4 h-4 text-accent"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-medium text-foreground">Tablet & Phone Ready</h3>
+                            <p class="mt-1 text-xs leading-relaxed text-secondary">Works on Android phones and tablets —
+                                use any secondary device as display.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-lift rounded-xl border border-border bg-card p-5 shadow-soft">
+                    <div class="flex items-start gap-3.5">
+                        <div class="mt-0.5 rounded-lg border border-border bg-background/60 p-2">
+                            <i data-lucide="layout" class="w-4 h-4 text-accent"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-medium text-foreground">Clean Full-Screen UI</h3>
+                            <p class="mt-1 text-xs leading-relaxed text-secondary">Distraction-free, high-contrast
+                                layout designed for customers to read easily.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-lift rounded-xl border border-border bg-card p-5 shadow-soft">
+                    <div class="flex items-start gap-3.5">
+                        <div class="mt-0.5 rounded-lg border border-border bg-background/60 p-2">
+                            <i data-lucide="zap" class="w-4 h-4 text-accent"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-medium text-foreground">Lightweight & Fast</h3>
+                            <p class="mt-1 text-xs leading-relaxed text-secondary">Small APK size and smooth updates
+                                with minimal battery impact.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-lift rounded-xl border border-border bg-card p-5 shadow-soft">
+                    <div class="flex items-start gap-3.5">
+                        <div class="mt-0.5 rounded-lg border border-border bg-background/60 p-2">
+                            <i data-lucide="shield" class="w-4 h-4 text-accent"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-medium text-foreground">No Internet Required</h3>
+                            <p class="mt-1 text-xs leading-relaxed text-secondary">Works fully offline on the local
+                                network after pairing.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-lift rounded-xl border border-border bg-card p-5 shadow-soft">
+                    <div class="flex items-start gap-3.5">
+                        <div class="mt-0.5 rounded-lg border border-border bg-background/60 p-2">
+                            <i data-lucide="git-branch" class="w-4 h-4 text-accent"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-medium text-foreground">Open Source</h3>
+                            <p class="mt-1 text-xs leading-relaxed text-secondary">Fully open source under the MIT
+                                license. Inspect and contribute.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TECH STACK ==================== -->
+        <section class="mx-auto max-w-[1200px] px-6 py-16 md:py-20 border-t border-border">
+            <div class="mb-8 fade-in">
+                <h2 class="text-xl font-semibold tracking-tight text-foreground">Tech Stack</h2>
+                <p class="mt-2 text-sm text-secondary">Built with modern Android tools for reliability and performance.
+                </p>
+            </div>
+
+            <div class="flex flex-wrap gap-2.5">
+                <span
+                    class="inline-flex items-center rounded-lg border border-border bg-card px-3.5 py-2 text-sm font-medium text-secondary hover:border-accent/40 hover:text-foreground transition-colors">Kotlin</span>
+                <span
+                    class="inline-flex items-center rounded-lg border border-border bg-card px-3.5 py-2 text-sm font-medium text-secondary hover:border-accent/40 hover:text-foreground transition-colors">Android
+                    SDK</span>
+                <span
+                    class="inline-flex items-center rounded-lg border border-border bg-card px-3.5 py-2 text-sm font-medium text-secondary hover:border-accent/40 hover:text-foreground transition-colors">Jetpack</span>
+                <span
+                    class="inline-flex items-center rounded-lg border border-border bg-card px-3.5 py-2 text-sm font-medium text-secondary hover:border-accent/40 hover:text-foreground transition-colors">Material
+                    Design</span>
+                <span
+                    class="inline-flex items-center rounded-lg border border-border bg-card px-3.5 py-2 text-sm font-medium text-secondary hover:border-accent/40 hover:text-foreground transition-colors">WebSocket
+                    / Local Network</span>
+                <span
+                    class="inline-flex items-center rounded-lg border border-border bg-card px-3.5 py-2 text-sm font-medium text-secondary hover:border-accent/40 hover:text-foreground transition-colors">JSON</span>
+            </div>
+        </section>
+
+        <!-- ==================== Software INFORMATION ==================== -->
+        <section class="mx-auto max-w-[1200px] px-6 py-16 md:py-20 border-t border-border">
+            <div class="mb-8 fade-in">
+                <h2 class="text-xl font-semibold tracking-tight text-foreground">Software Information</h2>
+            </div>
+
+            <div class="card-lift rounded-2xl border border-border bg-card p-6 md:p-8 shadow-soft">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="space-y-1">
+                        <p class="text-xs font-medium uppercase tracking-wider text-secondary/70">Version</p>
+                        <p class="text-sm font-medium text-foreground">v1.0.0</p>
+                    </div>
+                    <div class="space-y-1">
+                        <p class="text-xs font-medium uppercase tracking-wider text-secondary/70">Platform</p>
+                        <p class="text-sm font-medium text-foreground">Android 8.0+</p>
+                    </div>
+                    <div class="space-y-1">
+                        <p class="text-xs font-medium uppercase tracking-wider text-secondary/70">Language</p>
+                        <p class="text-sm font-medium text-foreground">Kotlin</p>
+                    </div>
+                    <div class="space-y-1">
+                        <p class="text-xs font-medium uppercase tracking-wider text-secondary/70">Distribution</p>
+                        <p class="text-sm font-medium text-foreground">APK</p>
+                    </div>
+                    <div class="space-y-1">
+                        <p class="text-xs font-medium uppercase tracking-wider text-secondary/70">License</p>
+                        <p class="text-sm font-medium text-foreground">MIT</p>
+                    </div>
+                    <div class="space-y-1">
+                        <p class="text-xs font-medium uppercase tracking-wider text-secondary/70">Companion</p>
+                        <p class="text-sm font-medium text-foreground">QuickBill Desktop</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== DOWNLOAD ==================== -->
+        <section id="download" class="mx-auto max-w-[1200px] px-6 py-16 md:py-24 border-t border-border">
+            <div
+                class="fade-in relative overflow-hidden rounded-2xl border border-border bg-card p-10 md:p-14 text-center shadow-soft">
+                <div
+                    class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(59,130,246,0.08)_0%,_transparent_70%)]">
+                </div>
+
+                <div class="relative space-y-6">
+                    <div
+                        class="inline-flex items-center justify-center rounded-full border border-border bg-background/60 p-3">
+                        <i data-lucide="download" class="w-6 h-6 text-accent"></i>
+                    </div>
+                    <div class="space-y-2">
+                        <h2 class="text-2xl md:text-3xl font-semibold tracking-tight text-foreground">
+                            Download QuickBill Barcode Scanner
+                        </h2>
+                        <p class="text-sm text-secondary max-w-md mx-auto">
+                            Latest stable APK for Android devices.
+                        </p>
+                    </div>
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+                        <a href="https://github.com/kartikbansode/quickbill-barcode-scanner-app/releases/download/v1.0.0/QuickBill-Barcode-Scanner-v1.0.0.apk"
+                            class="btn-primary inline-flex items-center gap-2 rounded-xl bg-accent px-6 py-3 text-sm font-medium text-white shadow-glow">
+                            <i data-lucide="download" class="w-4 h-4"></i>
+                            Download APK
+                            <span
+                                class="ml-1 rounded-md bg-white/15 px-1.5 py-0.5 text-[11px] font-medium text-white/90">Android
+                                · v1.0.0</span>
+                        </a>
+                        <a href="https://github.com/kartikbansode/quickbill-barcode-scanner-app"
+                            class="btn-secondary inline-flex items-center gap-2 rounded-xl border border-border bg-transparent px-6 py-3 text-sm font-medium text-secondary hover:border-secondary/50 hover:text-foreground hover:bg-white/5">
+                            <i data-lucide="github" class="w-4 h-4"></i>
+                            Source Code
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="border-t border-border">
+        <div class="mx-auto max-w-[1200px] px-6 py-10 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p class="text-sm text-secondary">
+                Built by <span class="text-foreground/90"><a href="https://kartikbansode.dev" target="_blank"
+                        class="hover:text-foreground transition-colors">Kartik Bansode</a></span>
+            </p>
+            <p class="text-sm text-secondary">
+                © 2026 Essenc Technologies
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>
