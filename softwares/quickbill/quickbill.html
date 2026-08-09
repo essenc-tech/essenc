@@ -4,567 +4,1670 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>QuickBill — Professional Windows Billing Software</title>
-  <meta name="description"
-    content="QuickBill is an offline desktop billing and inventory management software built in Python for retail stores." />
 
-  <!-- Inter Font -->
+  <title>QuickBill — Professional Billing & Inventory Software</title>
+
+  <meta
+    name="description"
+    content="QuickBill is a professional Windows billing and inventory management system with barcode scanning, payments, UPI QR, invoices, bill history and customer display integration."
+  />
+
+  <meta name="theme-color" content="#08090B" />
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-  <!-- Tailwind CSS CDN -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
+
   <script>
     tailwind.config = {
       theme: {
         extend: {
           fontFamily: {
-            sans: ['Inter', 'system-ui', 'sans-serif'],
+            sans: ["Inter", "system-ui", "sans-serif"],
+            display: ["DM Sans", "Inter", "system-ui", "sans-serif"]
           },
+
           colors: {
-            background: '#09090B',
-            card: '#111113',
-            border: '#27272A',
-            foreground: '#FAFAFA',
-            secondary: '#A1A1AA',
-            accent: '#3B82F6',
-            green: '#22C55E',
+            ink: "#08090B",
+            panel: "#0D0F12",
+            panel2: "#111318",
+            line: "#252931",
+            text: "#F5F7FA",
+            muted: "#8B929D",
+            blue: "#4F8CFF",
+            blue2: "#70A3FF"
           },
+
           boxShadow: {
-            'soft': '0 0 0 1px rgba(39, 39, 42, 0.6), 0 4px 24px -4px rgba(0, 0, 0, 0.4)',
-            'glow': '0 0 40px -8px rgba(59, 130, 246, 0.25)',
-            'card-hover': '0 0 0 1px rgba(59, 130, 246, 0.3), 0 12px 40px -8px rgba(0, 0, 0, 0.5)',
-          },
-        },
-      },
+            card:
+              "0 0 0 1px rgba(255,255,255,.025), 0 18px 55px rgba(0,0,0,.30)",
+            hover:
+              "0 0 0 1px rgba(79,140,255,.18), 0 24px 70px rgba(0,0,0,.42)",
+            glow:
+              "0 0 45px rgba(79,140,255,.14)"
+          }
+        }
+      }
     };
   </script>
 
-  <!-- Lucide Icons -->
+  <!-- Lucide -->
   <script src="https://unpkg.com/lucide@0.469.0"></script>
 
   <style>
+    :root {
+      color-scheme: dark;
+    }
+
+    html {
+      background: #08090B;
+    }
+
     body {
-      background-color: #09090B;
-      color: #FAFAFA;
+      margin: 0;
+      background:
+        radial-gradient(
+          ellipse 70% 35% at 50% -10%,
+          rgba(79, 140, 255, 0.11),
+          transparent 70%
+        ),
+        #08090B;
+      color: #F5F7FA;
+      font-family: Inter, system-ui, sans-serif;
     }
 
-    /* Soft blue ambient glow */
-    .hero-glow {
-      background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(59, 130, 246, 0.12), transparent);
+    ::selection {
+      background: rgba(79, 140, 255, 0.28);
+      color: #fff;
     }
 
-    /* Fade-in on load */
-    .fade-in {
-      animation: fadeIn 0.7s ease-out forwards;
+    .grid-background {
+      background-image:
+        linear-gradient(
+          rgba(255, 255, 255, 0.018) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.018) 1px,
+          transparent 1px
+        );
+      background-size: 64px 64px;
+      mask-image: linear-gradient(
+        to bottom,
+        black 0%,
+        rgba(0, 0, 0, 0.5) 45%,
+        transparent 100%
+      );
+      pointer-events: none;
+    }
+
+    .nav-glass {
+      background: rgba(8, 9, 11, 0.76);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .hero-orb {
+      position: absolute;
+      width: 620px;
+      height: 350px;
+      top: -220px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 999px;
+      background: rgba(79, 140, 255, 0.12);
+      filter: blur(90px);
+      pointer-events: none;
+    }
+
+    .fade-up {
       opacity: 0;
+      transform: translateY(16px);
+      animation: fadeUp 700ms cubic-bezier(.2,.7,.2,1) forwards;
     }
 
-    .fade-in-delay-1 {
-      animation-delay: 0.1s;
+    .delay-1 {
+      animation-delay: 90ms;
     }
 
-    .fade-in-delay-2 {
-      animation-delay: 0.2s;
+    .delay-2 {
+      animation-delay: 180ms;
     }
 
-    .fade-in-delay-3 {
-      animation-delay: 0.3s;
+    .delay-3 {
+      animation-delay: 270ms;
     }
 
-    .fade-in-delay-4 {
-      animation-delay: 0.4s;
+    .delay-4 {
+      animation-delay: 360ms;
     }
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(12px);
-      }
-
+    @keyframes fadeUp {
       to {
         opacity: 1;
         transform: translateY(0);
       }
     }
 
-    /* Card lift */
-    .card-lift {
-      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    .card {
+      transition:
+        transform 280ms ease,
+        border-color 280ms ease,
+        box-shadow 280ms ease,
+        background-color 280ms ease;
     }
 
-    .card-lift:hover {
+    .card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.25), 0 16px 48px -12px rgba(0, 0, 0, 0.55);
+      border-color: rgba(79, 140, 255, 0.22);
+      background: #101318;
+      box-shadow:
+        0 0 0 1px rgba(79, 140, 255, 0.06),
+        0 25px 70px rgba(0, 0, 0, 0.42);
     }
 
-    /* Navbar blur */
-    .nav-blur {
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      background-color: rgba(9, 9, 11, 0.75);
+    .icon-box {
+      transition:
+        transform 250ms ease,
+        background-color 250ms ease,
+        border-color 250ms ease;
     }
 
-    /* Button transitions */
-    .btn-primary {
-      transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+    .card:hover .icon-box {
+      transform: translateY(-2px);
+      border-color: rgba(79, 140, 255, 0.25);
+      background: rgba(79, 140, 255, 0.07);
     }
 
-    .btn-primary:hover {
-      box-shadow: 0 0 24px -4px rgba(59, 130, 246, 0.45);
+    .primary-btn {
+      transition:
+        transform 180ms ease,
+        background-color 180ms ease,
+        box-shadow 180ms ease;
+    }
+
+    .primary-btn:hover {
       transform: translateY(-1px);
+      background: #5C96FF;
+      box-shadow: 0 12px 34px rgba(79, 140, 255, 0.2);
     }
 
-    .btn-secondary {
-      transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    .secondary-btn {
+      transition:
+        background-color 180ms ease,
+        border-color 180ms ease,
+        color 180ms ease;
     }
 
-    /* Screenshot placeholder subtle gradient */
-    .screenshot-placeholder {
-      background: linear-gradient(145deg, #161618 0%, #111113 100%);
+    .secondary-btn:hover {
+      background: rgba(255, 255, 255, 0.035);
+      border-color: #3A3F48;
+      color: #fff;
+    }
+
+    .feature-icon {
+      transition:
+        background-color 220ms ease,
+        border-color 220ms ease;
+    }
+
+    .feature-card:hover .feature-icon {
+      background: rgba(79, 140, 255, 0.07);
+      border-color: rgba(79, 140, 255, 0.2);
+    }
+
+    .download-glow {
+      background:
+        radial-gradient(
+          ellipse at 50% 0%,
+          rgba(79, 140, 255, 0.10),
+          transparent 65%
+        ),
+        #0D0F12;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #4F8CFF;
+      box-shadow: 0 0 16px rgba(79, 140, 255, .75);
+    }
+
+    .ecosystem-connector {
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(79, 140, 255, .35),
+        transparent
+      );
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
     }
   </style>
 </head>
 
-<body class="font-sans antialiased selection:bg-accent/30 selection:text-foreground">
+<body class="antialiased">
 
-  <!-- ==================== NAVBAR ==================== -->
-  <nav class="fixed top-0 left-0 right-0 z-50 nav-blur border-b border-border">
-    <div class="mx-auto max-w-[1200px] px-6 h-14 flex items-center justify-between">
-      <a href="https://essenc.tech/"
-        class="text-sm font-semibold tracking-tight text-foreground hover:text-foreground/90 transition-colors">
-        ESSENC
+  <!-- Background -->
+  <div class="fixed inset-0 -z-10 overflow-hidden">
+    <div class="grid-background absolute inset-0"></div>
+    <div class="hero-orb"></div>
+  </div>
+
+
+  <!-- ========================================================= -->
+  <!-- NAVIGATION -->
+  <!-- ========================================================= -->
+
+  <header class="fixed inset-x-0 top-0 z-50 border-b border-white/[0.06] nav-glass">
+
+    <nav
+      class="mx-auto flex h-[68px] max-w-[1240px] items-center justify-between px-5 sm:px-7 lg:px-8"
+      aria-label="Main navigation"
+    >
+
+      <a
+        href="https://essenc.tech/"
+        class="flex items-center gap-3"
+      >
+
+  
+
+        <div>
+          <div class="text-[13px] font-semibold tracking-[0.16em] text-white">
+            ESSENC
+          </div>
+
+          <div class="mt-1 text-[9px] font-medium tracking-[0.12em] text-zinc-600">
+            TECHNOLOGIES
+          </div>
+        </div>
+
       </a>
-      <div class="flex items-center gap-6">
-        <a href="/index.html#softwares"
-          class="text-sm text-secondary hover:text-foreground transition-colors">Softwares</a>
-        <a href="https://github.com/kartikbansode"
-          class="text-sm text-secondary hover:text-foreground transition-colors">GitHub</a>
+
+
+      <div class="hidden items-center gap-8 md:flex">
+
+        <a
+          href="https://essenc.tech/#products"
+          class="text-[13px] font-medium text-zinc-500 transition hover:text-white"
+        >
+          Products
+        </a>
+
+        <a
+          href="https://github.com/kartikbansode/quickbill"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-[13px] font-medium text-zinc-500 transition hover:text-white"
+        >
+          Repository
+        </a>
+
+        <a
+          href="https://github.com/kartikbansode/quickbill/releases"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-[13px] font-medium text-zinc-500 transition hover:text-white"
+        >
+          Releases
+        </a>
+
       </div>
-    </div>
-  </nav>
 
-  <!-- ==================== MAIN ==================== -->
-  <main class="pt-14">
 
-    <!-- ==================== HERO ==================== -->
-    <section class="relative hero-glow">
-      <div class="mx-auto max-w-[1200px] px-6 pt-20 pb-16 md:pt-28 md:pb-24">
-        <div class="fade-in card-lift rounded-2xl border border-border bg-card p-8 md:p-12 shadow-soft">
-          <div class="flex flex-col gap-8">
-            <!-- Title + badges -->
-            <div class="space-y-5">
-              <div class="flex flex-wrap items-center gap-3">
-                <h1 class="text-3xl md:text-4xl font-semibold tracking-tight text-foreground">
-                  QuickBill
-                </h1>
-                <span
-                  class="inline-flex items-center rounded-full border border-border bg-background/60 px-2.5 py-0.5 text-xs font-medium text-secondary">
-                  v2.1.0
+      <a
+        href="https://github.com/kartikbansode/quickbill"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hidden items-center gap-2 rounded-lg border border-white/10 bg-white/[0.025] px-3.5 py-2 text-[12px] font-medium text-zinc-300 transition hover:border-white/20 hover:bg-white/[0.05] hover:text-white sm:flex"
+      >
+        <i data-lucide="github" class="h-3.5 w-3.5"></i>
+        GitHub
+      </a>
+
+    </nav>
+
+  </header>
+
+
+  <!-- ========================================================= -->
+  <!-- MAIN -->
+  <!-- ========================================================= -->
+
+  <main class="pt-[68px]">
+
+
+    <!-- ======================================================= -->
+    <!-- HERO -->
+    <!-- ======================================================= -->
+
+    <section class="relative overflow-hidden">
+
+      <div class="mx-auto max-w-[1240px] px-5 pb-20 pt-16 sm:px-7 sm:pt-24 lg:px-8 lg:pb-28 lg:pt-28">
+
+        <div
+          class="fade-up overflow-hidden rounded-3xl border border-white/[0.08] bg-panel shadow-card"
+        >
+
+          <div class="relative p-7 sm:p-10 lg:p-14">
+
+            <div class="absolute right-[-140px] top-[-160px] h-[420px] w-[420px] rounded-full bg-blue/10 blur-[110px]"></div>
+
+
+            <div class="relative max-w-4xl">
+
+              <!-- Status -->
+
+              <div
+                class="inline-flex items-center gap-2.5 rounded-full border border-blue/15 bg-blue/[0.045] px-3.5 py-2"
+              >
+
+                <span class="status-dot"></span>
+
+                <span class="text-[10px] font-semibold uppercase tracking-[0.15em] text-blue2">
+                  Latest release · v2.2.0
                 </span>
+
               </div>
-              <p class="text-lg text-secondary font-medium">
-                Professional Windows Billing Software
+
+
+              <!-- Heading -->
+
+              <h1
+                class="fade-up delay-1 mt-7 font-display text-[43px] font-semibold leading-[1.04] tracking-[-0.045em] text-white sm:text-5xl md:text-6xl lg:text-[70px]"
+              >
+                QuickBill
+              </h1>
+
+
+              <p
+                class="fade-up delay-2 mt-5 text-xl font-medium tracking-[-0.02em] text-zinc-300 sm:text-2xl"
+              >
+                Professional billing software built for real retail workflows.
               </p>
-              <p class="max-w-2xl text-[15px] leading-relaxed text-secondary">
-                QuickBill is an offline desktop billing and inventory management software built in Python for retail
-                stores. It includes barcode scanning, PDF invoice generation, inventory management, professional
-                installer and modern Windows application packaging.
+
+
+              <p
+                class="fade-up delay-3 mt-6 max-w-3xl text-[14px] leading-7 text-zinc-500 sm:text-[15px]"
+              >
+                QuickBill is a Windows desktop billing and inventory management
+                system designed for retail businesses. It combines fast billing,
+                barcode scanning, product management, inventory, payments,
+                professional invoices, bill history and connected customer
+                display functionality in one system.
               </p>
-            </div>
-
-            <!-- Badges -->
-            <div class="flex flex-wrap gap-2">
-
-              <span
-                class="inline-flex items-center gap-1.5 rounded-lg border border-border bg-background/50 px-3 py-1.5 text-xs font-medium text-secondary">
-                <i data-lucide="monitor" class="w-3.5 h-3.5 text-accent"></i>
-                Windows
-              </span>
 
 
-              <span
-                class="inline-flex items-center gap-1.5 rounded-lg border border-border bg-background/50 px-3 py-1.5 text-xs font-medium text-secondary">
-                <i data-lucide="git-branch" class="w-3.5 h-3.5 text-accent"></i>
-                Open Source
-              </span>
+              <!-- Technology / platform -->
 
-            </div>
+              <div class="fade-up delay-3 mt-7 flex flex-wrap gap-2">
 
-            <!-- CTAs -->
-            <div class="flex flex-wrap items-center gap-3 pt-1">
-              <a href="https://github.com/kartikbansode/quickbill/releases/download/v2.1.0/QuickBill_Setup_v2.1.0.exe"
-                class="btn-primary inline-flex items-center gap-2 rounded-xl bg-accent px-5 py-2.5 text-sm font-medium text-white shadow-glow">
-                <i data-lucide="download" class="w-4 h-4"></i>
-                Download Setup
-                <span class="ml-1 rounded-md bg-white/15 px-1.5 py-0.5 text-[11px] font-medium text-white/90">Windows ·
-                  v2.1.0</span>
-              </a>
-              <a href="https://github.com/kartikbansode/quickbill"
-                class="btn-secondary inline-flex items-center gap-2 rounded-xl border border-border bg-transparent px-5 py-2.5 text-sm font-medium text-secondary hover:border-secondary/50 hover:text-foreground hover:bg-white/5">
-                <i data-lucide="github" class="w-4 h-4"></i>
-                GitHub
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-      </div>
-    </section>
-    <!-- 
-    <section class="mx-auto max-w-[1200px] px-6 py-16 md:py-20">
-      <div class="mb-10 fade-in fade-in-delay-1">
-        <h2 class="text-xl font-semibold tracking-tight text-foreground">Screenshots</h2>
-        <p class="mt-2 text-sm text-secondary">A quick look at the interface and generated outputs.</p>
-      </div>
+                <span
+                  class="inline-flex items-center gap-2 rounded-lg border border-white/[0.07] bg-white/[0.02] px-3 py-2 text-[10px] font-medium text-zinc-500"
+                >
+                  <i data-lucide="monitor" class="h-3.5 w-3.5 text-blue2"></i>
+                  Windows
+                </span>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <span
+                  class="inline-flex items-center gap-2 rounded-lg border border-white/[0.07] bg-white/[0.02] px-3 py-2 text-[10px] font-medium text-zinc-500"
+                >
+                  <i data-lucide="code-2" class="h-3.5 w-3.5 text-blue2"></i>
+                  Python
+                </span>
 
-        <div
-          class="card-lift fade-in fade-in-delay-1 group rounded-2xl border border-border bg-card overflow-hidden shadow-soft">
-          <div
-            class="screenshot-placeholder aspect-[4/3] flex flex-col items-center justify-center gap-3 border-b border-border">
-            <div class="rounded-xl border border-border bg-background/80 p-3.5">
-              <img src="/softwares/quickbill/1.png" alt="Billing Dashboard">
-            </div>
+                <span
+                  class="inline-flex items-center gap-2 rounded-lg border border-white/[0.07] bg-white/[0.02] px-3 py-2 text-[10px] font-medium text-zinc-500"
+                >
+                  <i data-lucide="scan-barcode" class="h-3.5 w-3.5 text-blue2"></i>
+                  Barcode
+                </span>
 
-          </div>
-          <div class="px-5 py-4">
-            <h3 class="text-sm font-medium text-foreground">Billing Dashboard</h3>
-            <p class="mt-1 text-xs text-secondary">Main workspace for creating and managing bills.</p>
-          </div>
-        </div>
+                <span
+                  class="inline-flex items-center gap-2 rounded-lg border border-white/[0.07] bg-white/[0.02] px-3 py-2 text-[10px] font-medium text-zinc-500"
+                >
+                  <i data-lucide="wifi" class="h-3.5 w-3.5 text-blue2"></i>
+                  LAN Display
+                </span>
 
-       
-        <div
-          class="card-lift fade-in fade-in-delay-2 group rounded-2xl border border-border bg-card overflow-hidden shadow-soft">
-          <div
-            class="screenshot-placeholder aspect-[4/3] flex flex-col items-center justify-center gap-3 border-b border-border">
-            <div
-              class="screenshot-placeholder aspect-[4/3] flex flex-col items-center justify-center gap-3 border-b border-border">
-              <div class="rounded-xl border border-border bg-background/80 p-3.5">
-                <img src="/softwares/quickbill/2.png" alt="Invoice PDF">
+                <span
+                  class="inline-flex items-center gap-2 rounded-lg border border-white/[0.07] bg-white/[0.02] px-3 py-2 text-[10px] font-medium text-zinc-500"
+                >
+                  <i data-lucide="shield-check" class="h-3.5 w-3.5 text-blue2"></i>
+                  Offline First
+                </span>
+
+              </div>
+
+
+              <!-- Actions -->
+
+              <div class="fade-up delay-4 mt-9 flex flex-col gap-3 sm:flex-row">
+
+                <a
+                  href="https://github.com/kartikbansode/quickbill/releases/download/v2.2.0/QuickBill_Setup_v2.2.0.exe"
+                  class="primary-btn inline-flex items-center justify-center gap-2 rounded-xl bg-blue px-5 py-3 text-[12px] font-semibold text-white"
+                >
+                  <i data-lucide="download" class="h-4 w-4"></i>
+                  Download QuickBill
+                  <span class="rounded-md bg-white/15 px-1.5 py-0.5 text-[9px]">
+                    v2.2.0
+                  </span>
+                </a>
+
+
+                <a
+                  href="https://github.com/kartikbansode/quickbill"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="secondary-btn inline-flex items-center justify-center gap-2 rounded-xl border border-white/[0.09] px-5 py-3 text-[12px] font-semibold text-zinc-400"
+                >
+                  <i data-lucide="github" class="h-4 w-4"></i>
+                  View Source
+                  <i data-lucide="arrow-up-right" class="h-3.5 w-3.5"></i>
+                </a>
+
               </div>
 
             </div>
-          </div>
-          <div class="px-5 py-4">
-            <h3 class="text-sm font-medium text-foreground">Product Dashboard</h3>
-            <p class="mt-1 text-xs text-secondary">Manage your product catalog with ease.</p>
-          </div>
-        </div>
 
- 
-        <div
-          class="card-lift fade-in fade-in-delay-2 group rounded-2xl border border-border bg-card overflow-hidden shadow-soft">
-          <div
-            class="screenshot-placeholder aspect-[4/3] flex flex-col items-center justify-center gap-3 border-b border-border">
-            <div
-              class="screenshot-placeholder aspect-[4/3] flex flex-col items-center justify-center gap-3 border-b border-border">
-              <div class="rounded-xl border border-border bg-background/80 p-3.5">
-                <img src="/softwares/quickbill/3.png" alt="Invoice PDF">
+
+            <!-- Hero bottom metadata -->
+
+            <div class="relative mt-12 grid border-t border-white/[0.07] sm:grid-cols-3">
+
+              <div class="border-b border-white/[0.07] py-5 sm:border-b-0 sm:border-r sm:pr-7">
+
+                <p class="text-[9px] font-semibold uppercase tracking-[0.16em] text-zinc-700">
+                  Release
+                </p>
+
+                <p class="mt-2 text-[12px] font-medium text-zinc-300">
+                  v2.2.0
+                </p>
+
+              </div>
+
+
+              <div class="border-b border-white/[0.07] py-5 sm:border-b-0 sm:border-r sm:px-7">
+
+                <p class="text-[9px] font-semibold uppercase tracking-[0.16em] text-zinc-700">
+                  Platform
+                </p>
+
+                <p class="mt-2 text-[12px] font-medium text-zinc-300">
+                  Windows 10 / 11
+                </p>
+
+              </div>
+
+
+              <div class="py-5 sm:pl-7">
+
+                <p class="text-[9px] font-semibold uppercase tracking-[0.16em] text-zinc-700">
+                  License
+                </p>
+
+                <p class="mt-2 text-[12px] font-medium text-zinc-300">
+                  Proprietary
+                </p>
+
               </div>
 
             </div>
-          </div>
-          <div class="px-5 py-4">
-            <h3 class="text-sm font-medium text-foreground">Invoice PDF</h3>
-            <p class="mt-1 text-xs text-secondary">Generate and print professional invoices with ease.</p>
-          </div>
-        </div>
-      </div>
-    </section> -->
 
-    <!-- ==================== FEATURES ==================== -->
-    <section class="mx-auto max-w-[1200px] px-6 py-16 md:py-20 border-t border-border">
-      <div class="mb-10 fade-in">
-        <h2 class="text-xl font-semibold tracking-tight text-foreground">Features</h2>
-        <p class="mt-2 text-sm text-secondary">Everything you need for day-to-day retail billing and inventory.</p>
+          </div>
+
+        </div>
+
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <!-- Feature cards -->
-        <div class="card-lift rounded-xl border border-border bg-card p-5 shadow-soft">
-          <div class="flex items-start gap-3.5">
-            <div class="mt-0.5 rounded-lg border border-border bg-background/60 p-2">
-              <i data-lucide="scan-barcode" class="w-4 h-4 text-accent"></i>
-            </div>
-            <div>
-              <h3 class="text-sm font-medium text-foreground">Barcode Scanner</h3>
-              <p class="mt-1 text-xs leading-relaxed text-secondary">Scan products instantly with webcam or USB barcode
-                scanners.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="card-lift rounded-xl border border-border bg-card p-5 shadow-soft">
-          <div class="flex items-start gap-3.5">
-            <div class="mt-0.5 rounded-lg border border-border bg-background/60 p-2">
-              <i data-lucide="package" class="w-4 h-4 text-accent"></i>
-            </div>
-            <div>
-              <h3 class="text-sm font-medium text-foreground">Inventory Management</h3>
-              <p class="mt-1 text-xs leading-relaxed text-secondary">Track stock levels, low-stock alerts, and product
-                movement.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="card-lift rounded-xl border border-border bg-card p-5 shadow-soft">
-          <div class="flex items-start gap-3.5">
-            <div class="mt-0.5 rounded-lg border border-border bg-background/60 p-2">
-              <i data-lucide="boxes" class="w-4 h-4 text-accent"></i>
-            </div>
-            <div>
-              <h3 class="text-sm font-medium text-foreground">Product Management</h3>
-              <p class="mt-1 text-xs leading-relaxed text-secondary">Add, edit, and organize products with categories
-                and pricing.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="card-lift rounded-xl border border-border bg-card p-5 shadow-soft">
-          <div class="flex items-start gap-3.5">
-            <div class="mt-0.5 rounded-lg border border-border bg-background/60 p-2">
-              <i data-lucide="file-text" class="w-4 h-4 text-accent"></i>
-            </div>
-            <div>
-              <h3 class="text-sm font-medium text-foreground">Professional PDF Bills</h3>
-              <p class="mt-1 text-xs leading-relaxed text-secondary">Generate clean, printable invoices with your store
-                branding.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="card-lift rounded-xl border border-border bg-card p-5 shadow-soft">
-          <div class="flex items-start gap-3.5">
-            <div class="mt-0.5 rounded-lg border border-border bg-background/60 p-2">
-              <i data-lucide="history" class="w-4 h-4 text-accent"></i>
-            </div>
-            <div>
-              <h3 class="text-sm font-medium text-foreground">Bill History</h3>
-              <p class="mt-1 text-xs leading-relaxed text-secondary">Search and review past bills with quick reprint
-                support.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="card-lift rounded-xl border border-border bg-card p-5 shadow-soft">
-          <div class="flex items-start gap-3.5">
-            <div class="mt-0.5 rounded-lg border border-border bg-background/60 p-2">
-              <i data-lucide="pause-circle" class="w-4 h-4 text-accent"></i>
-            </div>
-            <div>
-              <h3 class="text-sm font-medium text-foreground">Hold Bills</h3>
-              <p class="mt-1 text-xs leading-relaxed text-secondary">Park incomplete bills and resume them whenever
-                needed.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="card-lift rounded-xl border border-border bg-card p-5 shadow-soft">
-          <div class="flex items-start gap-3.5">
-            <div class="mt-0.5 rounded-lg border border-border bg-background/60 p-2">
-              <i data-lucide="tag" class="w-4 h-4 text-accent"></i>
-            </div>
-            <div>
-              <h3 class="text-sm font-medium text-foreground">Barcode Labels</h3>
-              <p class="mt-1 text-xs leading-relaxed text-secondary">Print product labels with barcodes for shelves and
-                packaging.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="card-lift rounded-xl border border-border bg-card p-5 shadow-soft">
-          <div class="flex items-start gap-3.5">
-            <div class="mt-0.5 rounded-lg border border-border bg-background/60 p-2">
-              <i data-lucide="wifi-off" class="w-4 h-4 text-accent"></i>
-            </div>
-            <div>
-              <h3 class="text-sm font-medium text-foreground">Offline First</h3>
-              <p class="mt-1 text-xs leading-relaxed text-secondary">Works completely offline — no internet required to
-                run.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="card-lift rounded-xl border border-border bg-card p-5 shadow-soft">
-          <div class="flex items-start gap-3.5">
-            <div class="mt-0.5 rounded-lg border border-border bg-background/60 p-2">
-              <i data-lucide="hard-drive-download" class="w-4 h-4 text-accent"></i>
-            </div>
-            <div>
-              <h3 class="text-sm font-medium text-foreground">Windows Installer</h3>
-              <p class="mt-1 text-xs leading-relaxed text-secondary">Professional setup wizard for clean installation on
-                Windows.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="card-lift rounded-xl border border-border bg-card p-5 shadow-soft">
-          <div class="flex items-start gap-3.5">
-            <div class="mt-0.5 rounded-lg border border-border bg-background/60 p-2">
-              <i data-lucide="zap" class="w-4 h-4 text-accent"></i>
-            </div>
-            <div>
-              <h3 class="text-sm font-medium text-foreground">Fast & Lightweight</h3>
-              <p class="mt-1 text-xs leading-relaxed text-secondary">Snappy performance with a small footprint on your
-                system.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="card-lift rounded-xl border border-border bg-card p-5 shadow-soft">
-          <div class="flex items-start gap-3.5">
-            <div class="mt-0.5 rounded-lg border border-border bg-background/60 p-2">
-              <i data-lucide="database" class="w-4 h-4 text-accent"></i>
-            </div>
-            <div>
-              <h3 class="text-sm font-medium text-foreground">Local Storage</h3>
-              <p class="mt-1 text-xs leading-relaxed text-secondary">All data stays on your machine using simple local
-                storage.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="card-lift rounded-xl border border-border bg-card p-5 shadow-soft">
-          <div class="flex items-start gap-3.5">
-            <div class="mt-0.5 rounded-lg border border-border bg-background/60 p-2">
-              <i data-lucide="git-branch" class="w-4 h-4 text-accent"></i>
-            </div>
-            <div>
-              <h3 class="text-sm font-medium text-foreground">Open Source</h3>
-              <p class="mt-1 text-xs leading-relaxed text-secondary">Fully open source under the MIT license. Inspect
-                and contribute.</p>
-            </div>
-          </div>
-        </div>
-      </div>
     </section>
 
-    <!-- ==================== TECH STACK ==================== -->
-    <section class="mx-auto max-w-[1200px] px-6 py-16 md:py-20 border-t border-border">
-      <div class="mb-8 fade-in">
-        <h2 class="text-xl font-semibold tracking-tight text-foreground">Tech Stack</h2>
-        <p class="mt-2 text-sm text-secondary">Built with reliable, proven tools for desktop applications.</p>
-      </div>
 
-      <div class="flex flex-wrap gap-2.5">
-        <span
-          class="inline-flex items-center rounded-lg border border-border bg-card px-3.5 py-2 text-sm font-medium text-secondary hover:border-accent/40 hover:text-foreground transition-colors">Python</span>
-        <span
-          class="inline-flex items-center rounded-lg border border-border bg-card px-3.5 py-2 text-sm font-medium text-secondary hover:border-accent/40 hover:text-foreground transition-colors">Tkinter</span>
-        <span
-          class="inline-flex items-center rounded-lg border border-border bg-card px-3.5 py-2 text-sm font-medium text-secondary hover:border-accent/40 hover:text-foreground transition-colors">OpenCV</span>
-        <span
-          class="inline-flex items-center rounded-lg border border-border bg-card px-3.5 py-2 text-sm font-medium text-secondary hover:border-accent/40 hover:text-foreground transition-colors">ReportLab</span>
-        <span
-          class="inline-flex items-center rounded-lg border border-border bg-card px-3.5 py-2 text-sm font-medium text-secondary hover:border-accent/40 hover:text-foreground transition-colors">PyInstaller</span>
-        <span
-          class="inline-flex items-center rounded-lg border border-border bg-card px-3.5 py-2 text-sm font-medium text-secondary hover:border-accent/40 hover:text-foreground transition-colors">Inno
-          Setup</span>
-        <span
-          class="inline-flex items-center rounded-lg border border-border bg-card px-3.5 py-2 text-sm font-medium text-secondary hover:border-accent/40 hover:text-foreground transition-colors">JSON</span>
-        <span
-          class="inline-flex items-center rounded-lg border border-border bg-card px-3.5 py-2 text-sm font-medium text-secondary hover:border-accent/40 hover:text-foreground transition-colors">Pyzbar</span>
-        <span
-          class="inline-flex items-center rounded-lg border border-border bg-card px-3.5 py-2 text-sm font-medium text-secondary hover:border-accent/40 hover:text-foreground transition-colors">Pygame</span>
-      </div>
-    </section>
+    <!-- ======================================================= -->
+    <!-- OVERVIEW -->
+    <!-- ======================================================= -->
 
-    <!-- ==================== Software INFORMATION ==================== -->
-    <section class="mx-auto max-w-[1200px] px-6 py-16 md:py-20 border-t border-border">
-      <div class="mb-8 fade-in">
-        <h2 class="text-xl font-semibold tracking-tight text-foreground">Software Information</h2>
-      </div>
+    <section class="border-t border-white/[0.06]">
 
-      <div class="card-lift rounded-2xl border border-border bg-card p-6 md:p-8 shadow-soft">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div class="space-y-1">
-            <p class="text-xs font-medium uppercase tracking-wider text-secondary/70">Version</p>
-            <p class="text-sm font-medium text-foreground">v2.1.0</p>
-          </div>
-          <div class="space-y-1">
-            <p class="text-xs font-medium uppercase tracking-wider text-secondary/70">Platform</p>
-            <p class="text-sm font-medium text-foreground">Windows 10/11</p>
-          </div>
-          <div class="space-y-1">
-            <p class="text-xs font-medium uppercase tracking-wider text-secondary/70">Language</p>
-            <p class="text-sm font-medium text-foreground">Python</p>
-          </div>
-          <div class="space-y-1">
-            <p class="text-xs font-medium uppercase tracking-wider text-secondary/70">Installer</p>
-            <p class="text-sm font-medium text-foreground">Professional Setup Wizard</p>
-          </div>
-          <div class="space-y-1">
-            <p class="text-xs font-medium uppercase tracking-wider text-secondary/70">License</p>
-            <p class="text-sm font-medium text-foreground">MIT</p>
-          </div>
-          <div class="space-y-1">
-            <p class="text-xs font-medium uppercase tracking-wider text-secondary/70">Architecture</p>
-            <p class="text-sm font-medium text-foreground">64-bit</p>
-          </div>
-        </div>
-      </div>
-    </section>
+      <div class="mx-auto max-w-[1240px] px-5 py-20 sm:px-7 lg:px-8 lg:py-24">
 
-    <!-- ==================== DOWNLOAD ==================== -->
-    <section id="download" class="mx-auto max-w-[1200px] px-6 py-16 md:py-24 border-t border-border">
-      <div
-        class="fade-in relative overflow-hidden rounded-2xl border border-border bg-card p-10 md:p-14 text-center shadow-soft">
-        <!-- Subtle glow -->
-        <div
-          class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(59,130,246,0.08)_0%,_transparent_70%)]">
-        </div>
+        <div class="grid gap-12 lg:grid-cols-[0.8fr_1.4fr]">
 
-        <div class="relative space-y-6">
-          <div class="inline-flex items-center justify-center rounded-full border border-border bg-background/60 p-3">
-            <i data-lucide="download" class="w-6 h-6 text-accent"></i>
-          </div>
-          <div class="space-y-2">
-            <h2 class="text-2xl md:text-3xl font-semibold tracking-tight text-foreground">
-              Download QuickBill
-            </h2>
-            <p class="text-sm text-secondary max-w-md mx-auto">
-              Latest stable release with professional Windows installer.
+          <div>
+
+            <p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-blue">
+              Overview
             </p>
+
+            <h2
+              class="mt-3 font-display text-3xl font-semibold tracking-[-0.035em] text-white sm:text-4xl"
+            >
+              One system for the complete billing workflow.
+            </h2>
+
           </div>
-          <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
-            <a href="https://github.com/kartikbansode/quickbill/releases/download/v2.1.0/QuickBill_Setup_v2.1.0.exe"
-              class="btn-primary inline-flex items-center gap-2 rounded-xl bg-accent px-6 py-3 text-sm font-medium text-white shadow-glow">
-              <i data-lucide="download" class="w-4 h-4"></i>
-              Download Setup
-            </a>
-            <a href="https://github.com/kartikbansode/quickbill"
-              class="btn-secondary inline-flex items-center gap-2 rounded-xl border border-border bg-transparent px-6 py-3 text-sm font-medium text-secondary hover:border-secondary/50 hover:text-foreground hover:bg-white/5">
-              <i data-lucide="github" class="w-4 h-4"></i>
-              Source Code
-            </a>
+
+
+          <div>
+
+            <p class="text-[14px] leading-7 text-zinc-500">
+              QuickBill is designed around the complete retail checkout
+              workflow — from product discovery and barcode scanning to
+              billing, payment, transaction completion and invoice generation.
+            </p>
+
+            <p class="mt-5 text-[14px] leading-7 text-zinc-500">
+              The desktop application remains the authoritative source for
+              billing, products, inventory, payments and transaction records.
+              Companion applications extend the workflow without replacing
+              the desktop system.
+            </p>
+
+
+            <div class="mt-8 grid gap-3 sm:grid-cols-2">
+
+              <div class="rounded-xl border border-white/[0.07] bg-panel p-4">
+
+                <i data-lucide="database" class="h-4 w-4 text-blue2"></i>
+
+                <h3 class="mt-4 text-[12px] font-semibold text-white">
+                  Local-first architecture
+                </h3>
+
+                <p class="mt-2 text-[11px] leading-5 text-zinc-600">
+                  Core billing and business data remain available locally.
+                </p>
+
+              </div>
+
+
+              <div class="rounded-xl border border-white/[0.07] bg-panel p-4">
+
+                <i data-lucide="network" class="h-4 w-4 text-blue2"></i>
+
+                <h3 class="mt-4 text-[12px] font-semibold text-white">
+                  Connected ecosystem
+                </h3>
+
+                <p class="mt-2 text-[11px] leading-5 text-zinc-600">
+                  Android companion applications communicate with the desktop system.
+                </p>
+
+              </div>
+
+            </div>
+
           </div>
+
         </div>
+
       </div>
+
+    </section>
+
+
+    <!-- ======================================================= -->
+    <!-- FEATURES -->
+    <!-- ======================================================= -->
+
+    <section class="border-t border-white/[0.06]">
+
+      <div class="mx-auto max-w-[1240px] px-5 py-20 sm:px-7 lg:px-8 lg:py-24">
+
+        <div class="max-w-2xl">
+
+          <p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-blue">
+            Capabilities
+          </p>
+
+          <h2
+            class="mt-3 font-display text-3xl font-semibold tracking-[-0.035em] text-white sm:text-4xl"
+          >
+            Built around the retail counter.
+          </h2>
+
+          <p class="mt-4 text-[13px] leading-6 text-zinc-600">
+            The core features focus on speed, accuracy and a dependable
+            day-to-day billing workflow.
+          </p>
+
+        </div>
+
+
+        <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+
+
+          <!-- Billing -->
+
+          <article class="feature-card card rounded-2xl border border-white/[0.07] bg-panel p-6">
+
+            <div class="feature-icon flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.07] bg-white/[0.025]">
+              <i data-lucide="receipt-text" class="h-[18px] w-[18px] text-blue2"></i>
+            </div>
+
+            <h3 class="mt-5 text-[14px] font-semibold text-white">
+              Fast Billing
+            </h3>
+
+            <p class="mt-2 text-[12px] leading-6 text-zinc-600">
+              Add products quickly, adjust quantities and keep totals updated
+              throughout the billing workflow.
+            </p>
+
+          </article>
+
+
+          <!-- Barcode -->
+
+          <article class="feature-card card rounded-2xl border border-white/[0.07] bg-panel p-6">
+
+            <div class="feature-icon flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.07] bg-white/[0.025]">
+              <i data-lucide="scan-barcode" class="h-[18px] w-[18px] text-blue2"></i>
+            </div>
+
+            <h3 class="mt-5 text-[14px] font-semibold text-white">
+              Barcode Scanning
+            </h3>
+
+            <p class="mt-2 text-[12px] leading-6 text-zinc-600">
+              Supports barcode-based product workflows using compatible
+              scanning hardware and camera-based scanning.
+            </p>
+
+          </article>
+
+
+          <!-- Products -->
+
+          <article class="feature-card card rounded-2xl border border-white/[0.07] bg-panel p-6">
+
+            <div class="feature-icon flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.07] bg-white/[0.025]">
+              <i data-lucide="boxes" class="h-[18px] w-[18px] text-blue2"></i>
+            </div>
+
+            <h3 class="mt-5 text-[14px] font-semibold text-white">
+              Product Management
+            </h3>
+
+            <p class="mt-2 text-[12px] leading-6 text-zinc-600">
+              Add, edit, search and manage products used throughout the
+              billing and inventory workflow.
+            </p>
+
+          </article>
+
+
+          <!-- Inventory -->
+
+          <article class="feature-card card rounded-2xl border border-white/[0.07] bg-panel p-6">
+
+            <div class="feature-icon flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.07] bg-white/[0.025]">
+              <i data-lucide="package-check" class="h-[18px] w-[18px] text-blue2"></i>
+            </div>
+
+            <h3 class="mt-5 text-[14px] font-semibold text-white">
+              Inventory Management
+            </h3>
+
+            <p class="mt-2 text-[12px] leading-6 text-zinc-600">
+              Maintain product stock information alongside the billing
+              workflow.
+            </p>
+
+          </article>
+
+
+          <!-- Payments -->
+
+          <article class="feature-card card rounded-2xl border border-white/[0.07] bg-panel p-6">
+
+            <div class="feature-icon flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.07] bg-white/[0.025]">
+              <i data-lucide="credit-card" class="h-[18px] w-[18px] text-blue2"></i>
+            </div>
+
+            <h3 class="mt-5 text-[14px] font-semibold text-white">
+              Payment Workflow
+            </h3>
+
+            <p class="mt-2 text-[12px] leading-6 text-zinc-600">
+              Supports cash, UPI, card and credit payment workflows through
+              the dedicated payment interface.
+            </p>
+
+          </article>
+
+
+          <!-- UPI -->
+
+          <article class="feature-card card rounded-2xl border border-white/[0.07] bg-panel p-6">
+
+            <div class="feature-icon flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.07] bg-white/[0.025]">
+              <i data-lucide="qr-code" class="h-[18px] w-[18px] text-blue2"></i>
+            </div>
+
+            <h3 class="mt-5 text-[14px] font-semibold text-white">
+              Dynamic UPI QR
+            </h3>
+
+            <p class="mt-2 text-[12px] leading-6 text-zinc-600">
+              Generates a scannable UPI payment QR linked to the current
+              transaction amount.
+            </p>
+
+          </article>
+
+
+          <!-- Customer Display -->
+
+          <article class="feature-card card rounded-2xl border border-white/[0.07] bg-panel p-6">
+
+            <div class="feature-icon flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.07] bg-white/[0.025]">
+              <i data-lucide="tablet-smartphone" class="h-[18px] w-[18px] text-blue2"></i>
+            </div>
+
+            <h3 class="mt-5 text-[14px] font-semibold text-white">
+              Customer Display
+            </h3>
+
+            <p class="mt-2 text-[12px] leading-6 text-zinc-600">
+              Connects with the QuickBill Customer Display Android application
+              for live customer-facing billing and payment information.
+            </p>
+
+          </article>
+
+
+          <!-- Bills -->
+
+          <article class="feature-card card rounded-2xl border border-white/[0.07] bg-panel p-6">
+
+            <div class="feature-icon flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.07] bg-white/[0.025]">
+              <i data-lucide="history" class="h-[18px] w-[18px] text-blue2"></i>
+            </div>
+
+            <h3 class="mt-5 text-[14px] font-semibold text-white">
+              Bill History
+            </h3>
+
+            <p class="mt-2 text-[12px] leading-6 text-zinc-600">
+              Review previous transactions with bill search and reprint
+              workflows.
+            </p>
+
+          </article>
+
+
+          <!-- Hold -->
+
+          <article class="feature-card card rounded-2xl border border-white/[0.07] bg-panel p-6">
+
+            <div class="feature-icon flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.07] bg-white/[0.025]">
+              <i data-lucide="pause-circle" class="h-[18px] w-[18px] text-blue2"></i>
+            </div>
+
+            <h3 class="mt-5 text-[14px] font-semibold text-white">
+              Hold & Resume Bills
+            </h3>
+
+            <p class="mt-2 text-[12px] leading-6 text-zinc-600">
+              Temporarily hold incomplete billing sessions and resume them
+              when required.
+            </p>
+
+          </article>
+
+
+          <!-- Invoice -->
+
+          <article class="feature-card card rounded-2xl border border-white/[0.07] bg-panel p-6">
+
+            <div class="feature-icon flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.07] bg-white/[0.025]">
+              <i data-lucide="file-text" class="h-[18px] w-[18px] text-blue2"></i>
+            </div>
+
+            <h3 class="mt-5 text-[14px] font-semibold text-white">
+              Professional Invoices
+            </h3>
+
+            <p class="mt-2 text-[12px] leading-6 text-zinc-600">
+              Generate professional PDF bills for supported print formats,
+              including A4 and thermal-style workflows.
+            </p>
+
+          </article>
+
+
+          <!-- Labels -->
+
+          <article class="feature-card card rounded-2xl border border-white/[0.07] bg-panel p-6">
+
+            <div class="feature-icon flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.07] bg-white/[0.025]">
+              <i data-lucide="tag" class="h-[18px] w-[18px] text-blue2"></i>
+            </div>
+
+            <h3 class="mt-5 text-[14px] font-semibold text-white">
+              Barcode Labels
+            </h3>
+
+            <p class="mt-2 text-[12px] leading-6 text-zinc-600">
+              Generate barcode label PDFs for products, shelves and packaging.
+            </p>
+
+          </article>
+
+
+          <!-- Settings -->
+
+          <article class="feature-card card rounded-2xl border border-white/[0.07] bg-panel p-6">
+
+            <div class="feature-icon flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.07] bg-white/[0.025]">
+              <i data-lucide="settings-2" class="h-[18px] w-[18px] text-blue2"></i>
+            </div>
+
+            <h3 class="mt-5 text-[14px] font-semibold text-white">
+              Configurable Settings
+            </h3>
+
+            <p class="mt-2 text-[12px] leading-6 text-zinc-600">
+              Application and billing configuration can be managed from the
+              desktop settings workflow.
+            </p>
+
+          </article>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ======================================================= -->
+    <!-- V2.2.0 CHANGES -->
+    <!-- ======================================================= -->
+
+    <section class="border-t border-white/[0.06]">
+
+      <div class="mx-auto max-w-[1240px] px-5 py-20 sm:px-7 lg:px-8 lg:py-24">
+
+        <div class="grid gap-12 lg:grid-cols-[0.75fr_1.4fr]">
+
+          <div>
+
+            <div
+              class="inline-flex items-center gap-2 rounded-full border border-blue/15 bg-blue/[0.04] px-3 py-1.5"
+            >
+              <span class="text-[9px] font-semibold uppercase tracking-[0.15em] text-blue2">
+                Release v2.2.0
+              </span>
+            </div>
+
+            <h2
+              class="mt-5 font-display text-3xl font-semibold tracking-[-0.035em] text-white sm:text-4xl"
+            >
+              What changed.
+            </h2>
+
+            <p class="mt-4 text-[13px] leading-6 text-zinc-600">
+              The latest release focuses on the payment experience,
+              connected customer display workflow and overall stability.
+            </p>
+
+          </div>
+
+
+          <div class="border-t border-white/[0.07]">
+
+            <div class="grid gap-3 border-b border-white/[0.07] py-5 sm:grid-cols-[190px_1fr]">
+
+              <h3 class="text-[12px] font-semibold text-white">
+                Payment workflow
+              </h3>
+
+              <p class="text-[12px] leading-6 text-zinc-600">
+                Refined payment dialog with improved handling for cash,
+                UPI, card and credit payment modes.
+              </p>
+
+            </div>
+
+
+            <div class="grid gap-3 border-b border-white/[0.07] py-5 sm:grid-cols-[190px_1fr]">
+
+              <h3 class="text-[12px] font-semibold text-white">
+                UPI payments
+              </h3>
+
+              <p class="text-[12px] leading-6 text-zinc-600">
+                Added dynamic, amount-linked UPI QR support for payment
+                collection.
+              </p>
+
+            </div>
+
+
+            <div class="grid gap-3 border-b border-white/[0.07] py-5 sm:grid-cols-[190px_1fr]">
+
+              <h3 class="text-[12px] font-semibold text-white">
+                Customer Display
+              </h3>
+
+              <p class="text-[12px] leading-6 text-zinc-600">
+                Improved synchronization between QuickBill Desktop and the
+                Android Customer Display application.
+              </p>
+
+            </div>
+
+
+            <div class="grid gap-3 border-b border-white/[0.07] py-5 sm:grid-cols-[190px_1fr]">
+
+              <h3 class="text-[12px] font-semibold text-white">
+                Connection handling
+              </h3>
+
+              <p class="text-[12px] leading-6 text-zinc-600">
+                Improved LAN connection and automatic reconnection behavior
+                for connected customer displays.
+              </p>
+
+            </div>
+
+
+            <div class="grid gap-3 border-b border-white/[0.07] py-5 sm:grid-cols-[190px_1fr]">
+
+              <h3 class="text-[12px] font-semibold text-white">
+                Transaction states
+              </h3>
+
+              <p class="text-[12px] leading-6 text-zinc-600">
+                Improved payment pending and successful transaction state
+                synchronization across the desktop and customer display.
+              </p>
+
+            </div>
+
+
+            <div class="grid gap-3 py-5 sm:grid-cols-[190px_1fr]">
+
+              <h3 class="text-[12px] font-semibold text-white">
+                Stability
+              </h3>
+
+              <p class="text-[12px] leading-6 text-zinc-600">
+                General interface, workflow and release packaging
+                improvements.
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ======================================================= -->
+    <!-- ECOSYSTEM -->
+    <!-- ======================================================= -->
+
+    <section class="border-t border-white/[0.06]">
+
+      <div class="mx-auto max-w-[1240px] px-5 py-20 sm:px-7 lg:px-8 lg:py-24">
+
+        <div class="max-w-2xl">
+
+          <p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-blue">
+            QuickBill ecosystem
+          </p>
+
+          <h2
+            class="mt-3 font-display text-3xl font-semibold tracking-[-0.035em] text-white sm:text-4xl"
+          >
+            The desktop application is the core.
+          </h2>
+
+          <p class="mt-4 text-[13px] leading-6 text-zinc-600">
+            QuickBill is being developed as a connected system. The desktop
+            application remains responsible for the authoritative billing
+            state while companion Android applications extend the workflow.
+          </p>
+
+        </div>
+
+
+        <div class="relative mt-12 rounded-2xl border border-white/[0.08] bg-panel p-6 sm:p-8">
+
+          <div class="relative grid gap-8 md:grid-cols-3">
+
+            <!-- Core -->
+
+            <div class="text-center">
+
+              <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-blue/20 bg-blue/5">
+                <i data-lucide="monitor" class="h-7 w-7 text-blue2"></i>
+              </div>
+
+              <h3 class="mt-5 text-[14px] font-semibold text-white">
+                QuickBill Desktop
+              </h3>
+
+              <p class="mx-auto mt-2 max-w-xs text-[11px] leading-5 text-zinc-600">
+                Billing, products, inventory, payments and transaction
+                management.
+              </p>
+
+              <span class="mt-4 inline-block text-[9px] font-semibold uppercase tracking-[0.14em] text-blue">
+                Core system
+              </span>
+
+            </div>
+
+
+            <!-- Customer -->
+
+            <div class="text-center">
+
+              <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-white/[0.08] bg-white/[0.025]">
+                <i data-lucide="tablet-smartphone" class="h-7 w-7 text-zinc-400"></i>
+              </div>
+
+              <h3 class="mt-5 text-[14px] font-semibold text-white">
+                Customer Display
+              </h3>
+
+              <p class="mx-auto mt-2 max-w-xs text-[11px] leading-5 text-zinc-600">
+                Real-time Android customer-facing billing and payment display.
+              </p>
+
+              <a
+                href="/softwares/quickbill-customer-display-app/quickbill-customer-display-app.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="mt-4 inline-flex items-center gap-1 text-[10px] font-medium text-blue2 hover:text-white"
+              >
+                View details
+                <i data-lucide="arrow-up-right" class="h-3 w-3"></i>
+              </a>
+
+            </div>
+
+
+            <!-- Scanner -->
+
+            <div class="text-center">
+
+              <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-white/[0.08] bg-white/[0.025]">
+                <i data-lucide="scan-line" class="h-7 w-7 text-zinc-400"></i>
+              </div>
+
+              <h3 class="mt-5 text-[14px] font-semibold text-white">
+                Barcode Scanner
+              </h3>
+
+              <p class="mx-auto mt-2 max-w-xs text-[11px] leading-5 text-zinc-600">
+                Android companion designed for dedicated barcode scanning
+                workflows.
+              </p>
+
+              <a
+                href="/softwares/quickbill-barcode-scanner-app/quickbill-barcode-scanner-app.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="mt-4 inline-flex items-center gap-1 text-[10px] font-medium text-blue2 hover:text-white"
+              >
+                View details
+                <i data-lucide="arrow-up-right" class="h-3 w-3"></i>
+              </a>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ======================================================= -->
+    <!-- TECH STACK -->
+    <!-- ======================================================= -->
+
+    <section class="border-t border-white/[0.06]">
+
+      <div class="mx-auto max-w-[1240px] px-5 py-20 sm:px-7 lg:px-8 lg:py-24">
+
+        <div class="mb-10">
+
+          <p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-blue">
+            Technology
+          </p>
+
+          <h2
+            class="mt-3 font-display text-3xl font-semibold tracking-[-0.035em] text-white sm:text-4xl"
+          >
+            Built with focused tooling.
+          </h2>
+
+        </div>
+
+
+        <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+
+          <a
+            href="https://www.python.org/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="card rounded-xl border border-white/[0.07] bg-panel p-5"
+          >
+            <i data-lucide="code-2" class="h-5 w-5 text-blue2"></i>
+
+            <h3 class="mt-4 text-[13px] font-semibold text-white">
+              Python
+            </h3>
+
+            <p class="mt-1 text-[10px] text-zinc-600">
+              Core application language
+            </p>
+          </a>
+
+
+          <a
+            href="https://docs.python.org/3/library/tkinter.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="card rounded-xl border border-white/[0.07] bg-panel p-5"
+          >
+            <i data-lucide="layout-dashboard" class="h-5 w-5 text-blue2"></i>
+
+            <h3 class="mt-4 text-[13px] font-semibold text-white">
+              Tkinter
+            </h3>
+
+            <p class="mt-1 text-[10px] text-zinc-600">
+              Desktop user interface
+            </p>
+          </a>
+
+
+          <a
+            href="https://opencv.org/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="card rounded-xl border border-white/[0.07] bg-panel p-5"
+          >
+            <i data-lucide="camera" class="h-5 w-5 text-blue2"></i>
+
+            <h3 class="mt-4 text-[13px] font-semibold text-white">
+              OpenCV
+            </h3>
+
+            <p class="mt-1 text-[10px] text-zinc-600">
+              Camera-based scanning
+            </p>
+          </a>
+
+
+          <a
+            href="https://docs.reportlab.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="card rounded-xl border border-white/[0.07] bg-panel p-5"
+          >
+            <i data-lucide="file-output" class="h-5 w-5 text-blue2"></i>
+
+            <h3 class="mt-4 text-[13px] font-semibold text-white">
+              ReportLab
+            </h3>
+
+            <p class="mt-1 text-[10px] text-zinc-600">
+              PDF generation
+            </p>
+          </a>
+
+
+          <a
+            href="https://pyinstaller.org/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="card rounded-xl border border-white/[0.07] bg-panel p-5"
+          >
+            <i data-lucide="package" class="h-5 w-5 text-blue2"></i>
+
+            <h3 class="mt-4 text-[13px] font-semibold text-white">
+              PyInstaller
+            </h3>
+
+            <p class="mt-1 text-[10px] text-zinc-600">
+              Windows executable packaging
+            </p>
+          </a>
+
+
+          <a
+            href="https://jrsoftware.org/isinfo.php"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="card rounded-xl border border-white/[0.07] bg-panel p-5"
+          >
+            <i data-lucide="box" class="h-5 w-5 text-blue2"></i>
+
+            <h3 class="mt-4 text-[13px] font-semibold text-white">
+              Inno Setup
+            </h3>
+
+            <p class="mt-1 text-[10px] text-zinc-600">
+              Windows installer
+            </p>
+          </a>
+
+
+          <div class="card rounded-xl border border-white/[0.07] bg-panel p-5">
+
+            <i data-lucide="file-json" class="h-5 w-5 text-blue2"></i>
+
+            <h3 class="mt-4 text-[13px] font-semibold text-white">
+              JSON
+            </h3>
+
+            <p class="mt-1 text-[10px] text-zinc-600">
+              Local configuration and data
+            </p>
+
+          </div>
+
+
+          <div class="card rounded-xl border border-white/[0.07] bg-panel p-5">
+
+            <i data-lucide="gamepad-2" class="h-5 w-5 text-blue2"></i>
+
+            <h3 class="mt-4 text-[13px] font-semibold text-white">
+              Pygame
+            </h3>
+
+            <p class="mt-1 text-[10px] text-zinc-600">
+              Application audio support
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ======================================================= -->
+    <!-- SOFTWARE DETAILS -->
+    <!-- ======================================================= -->
+
+    <section class="border-t border-white/[0.06]">
+
+      <div class="mx-auto max-w-[1240px] px-5 py-20 sm:px-7 lg:px-8 lg:py-24">
+
+        <div class="max-w-2xl">
+
+          <p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-blue">
+            Release information
+          </p>
+
+          <h2
+            class="mt-3 font-display text-3xl font-semibold tracking-[-0.035em] text-white sm:text-4xl"
+          >
+            QuickBill v2.2.0
+          </h2>
+
+        </div>
+
+
+        <div class="mt-10 overflow-hidden rounded-2xl border border-white/[0.07] bg-panel">
+
+          <div class="grid divide-y divide-white/[0.06] sm:grid-cols-2 sm:divide-y-0">
+
+            <div class="border-b border-white/[0.06] p-6 sm:border-r">
+
+              <p class="text-[9px] font-semibold uppercase tracking-[0.16em] text-zinc-700">
+                Version
+              </p>
+
+              <p class="mt-2 text-[13px] font-semibold text-white">
+                2.2.0
+              </p>
+
+            </div>
+
+
+            <div class="border-b border-white/[0.06] p-6 sm:border-b-0">
+
+              <p class="text-[9px] font-semibold uppercase tracking-[0.16em] text-zinc-700">
+                Platform
+              </p>
+
+              <p class="mt-2 text-[13px] font-semibold text-white">
+                Windows 10 / Windows 11
+              </p>
+
+            </div>
+
+
+            <div class="border-b border-white/[0.06] p-6 sm:border-r sm:border-b-0">
+
+              <p class="text-[9px] font-semibold uppercase tracking-[0.16em] text-zinc-700">
+                Application
+              </p>
+
+              <p class="mt-2 text-[13px] font-semibold text-white">
+                Desktop Billing System
+              </p>
+
+            </div>
+
+
+            <div class="border-b border-white/[0.06] p-6 sm:border-b-0">
+
+              <p class="text-[9px] font-semibold uppercase tracking-[0.16em] text-zinc-700">
+                Distribution
+              </p>
+
+              <p class="mt-2 text-[13px] font-semibold text-white">
+                Windows Installer
+              </p>
+
+            </div>
+
+
+            <div class="border-b border-white/[0.06] p-6 sm:border-r sm:border-b-0">
+
+              <p class="text-[9px] font-semibold uppercase tracking-[0.16em] text-zinc-700">
+                Release
+              </p>
+
+              <p class="mt-2 text-[13px] font-semibold text-white">
+                August 2026
+              </p>
+
+            </div>
+
+
+            <div class="p-6">
+
+              <p class="text-[9px] font-semibold uppercase tracking-[0.16em] text-zinc-700">
+                License
+              </p>
+
+              <p class="mt-2 text-[13px] font-semibold text-white">
+                Proprietary
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ======================================================= -->
+    <!-- DOWNLOAD -->
+    <!-- ======================================================= -->
+
+    <section class="border-t border-white/[0.06]">
+
+      <div class="mx-auto max-w-[1240px] px-5 py-20 sm:px-7 lg:px-8 lg:py-28">
+
+        <div class="download-glow relative overflow-hidden rounded-3xl border border-white/[0.08] p-8 text-center sm:p-12 lg:p-16">
+
+          <div class="relative mx-auto max-w-2xl">
+
+            <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl border border-blue/20 bg-blue/5">
+              <i data-lucide="download" class="h-5 w-5 text-blue2"></i>
+            </div>
+
+
+            <p class="mt-7 text-[10px] font-semibold uppercase tracking-[0.18em] text-blue">
+              Latest stable release
+            </p>
+
+
+            <h2
+              class="mt-3 font-display text-3xl font-semibold tracking-[-0.04em] text-white sm:text-4xl"
+            >
+              Download QuickBill v2.2.0
+            </h2>
+
+
+            <p class="mx-auto mt-4 max-w-lg text-[13px] leading-6 text-zinc-600">
+              Install the latest QuickBill desktop release for Windows and
+              start using the complete billing and inventory workflow.
+            </p>
+
+
+            <div class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+
+              <a
+                href="https://github.com/kartikbansode/quickbill/releases/download/v2.2.0/QuickBill_Setup_v2.2.0.exe"
+                class="primary-btn inline-flex items-center justify-center gap-2 rounded-xl bg-blue px-6 py-3 text-[12px] font-semibold text-white"
+              >
+                <i data-lucide="download" class="h-4 w-4"></i>
+                Download Windows Setup
+              </a>
+
+
+              <a
+                href="https://github.com/kartikbansode/quickbill/releases"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="secondary-btn inline-flex items-center justify-center gap-2 rounded-xl border border-white/[0.09] px-6 py-3 text-[12px] font-semibold text-zinc-400"
+              >
+                <i data-lucide="tag" class="h-4 w-4"></i>
+                View all releases
+                <i data-lucide="arrow-up-right" class="h-3.5 w-3.5"></i>
+              </a>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ======================================================= -->
+    <!-- SOURCE / RELATED -->
+    <!-- ======================================================= -->
+
+    <section class="border-t border-white/[0.06]">
+
+      <div class="mx-auto max-w-[1240px] px-5 py-20 sm:px-7 lg:px-8 lg:py-24">
+
+        <div class="grid gap-5 md:grid-cols-2">
+
+
+          <!-- Repository -->
+
+          <a
+            href="/softwares/quickbill/quickbill.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="card rounded-2xl border border-white/[0.08] bg-panel p-7"
+          >
+
+            <div class="flex items-center justify-between">
+
+              <div class="flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.07] bg-white/[0.025]">
+                <i data-lucide="github" class="h-[18px] w-[18px] text-blue2"></i>
+              </div>
+
+              <i data-lucide="arrow-up-right" class="h-4 w-4 text-zinc-700"></i>
+
+            </div>
+
+            <h3 class="mt-6 text-[15px] font-semibold text-white">
+              QuickBill
+            </h3>
+
+            <p class="mt-2 text-[12px] leading-6 text-zinc-600">
+              Explore the project source code, documentation and development
+              history.
+            </p>
+
+          </a>
+
+
+          <!-- Customer Display -->
+
+          <a
+            href="/softwares/quickbill-customer-display-app/quickbill-customer-display-app.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="card rounded-2xl border border-white/[0.08] bg-panel p-7"
+          >
+
+            <div class="flex items-center justify-between">
+
+              <div class="flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.07] bg-white/[0.025]">
+                <i data-lucide="tablet-smartphone" class="h-[18px] w-[18px] text-blue2"></i>
+              </div>
+
+              <i data-lucide="arrow-up-right" class="h-4 w-4 text-zinc-700"></i>
+
+            </div>
+
+            <h3 class="mt-6 text-[15px] font-semibold text-white">
+              QuickBill Customer Display
+            </h3>
+
+            <p class="mt-2 text-[12px] leading-6 text-zinc-600">
+              Companion Android application for the customer-facing billing
+              and payment display.
+            </p>
+
+          </a>
+
+        </div>
+
+      </div>
+
     </section>
 
   </main>
 
-  <!-- ==================== FOOTER ==================== -->
-  <footer class="border-t border-border">
-    <div class="mx-auto max-w-[1200px] px-6 py-10 flex flex-col sm:flex-row items-center justify-between gap-4">
-      <p class="text-sm text-secondary">
-        Built by <span class="text-foreground/90"><a href="https://kartikbansode.dev" target="_blank"
-            class="hover:text-foreground transition-colors">Kartik Bansode</a></span>
-      </p>
-      <p class="text-sm text-secondary">
-        © 2026 Essenc Technologies
-      </p>
+
+  <!-- ========================================================= -->
+  <!-- FOOTER -->
+  <!-- ========================================================= -->
+
+  <footer class="border-t border-white/[0.06]">
+
+    <div class="mx-auto max-w-[1240px] px-5 py-10 sm:px-7 lg:px-8">
+
+      <div class="flex flex-col gap-7 sm:flex-row sm:items-center sm:justify-between">
+
+        <div>
+
+          <a
+            href="https://essenc.tech/"
+            class="text-[13px] font-semibold tracking-[0.16em] text-white"
+          >
+            ESSENC
+          </a>
+
+          <p class="mt-2 text-[11px] text-zinc-700">
+            QuickBill · Professional billing software
+          </p>
+
+        </div>
+
+
+        <div class="flex flex-wrap items-center gap-x-6 gap-y-3">
+
+          <a
+            href="https://github.com/kartikbansode/quickbill"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 text-[11px] text-zinc-600 transition hover:text-white"
+          >
+            <i data-lucide="github" class="h-3.5 w-3.5"></i>
+            GitHub
+          </a>
+
+          <a
+            href="https://essenc.tech/"
+            class="inline-flex items-center gap-2 text-[11px] text-zinc-600 transition hover:text-white"
+          >
+            <i data-lucide="arrow-left" class="h-3.5 w-3.5"></i>
+            Essenc Technologies
+          </a>
+
+          <a
+            href="https://kartikbansode.dev"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 text-[11px] text-zinc-600 transition hover:text-white"
+          >
+            <i data-lucide="user" class="h-3.5 w-3.5"></i>
+            Kartik Bansode
+          </a>
+
+        </div>
+
+      </div>
+
+
+      <div class="mt-8 flex flex-col gap-2 border-t border-white/[0.05] pt-6 text-[10px] text-zinc-700 sm:flex-row sm:items-center sm:justify-between">
+
+        <p>
+          © 2026 Essenc Technologies
+        </p>
+
+        <p>
+          QuickBill v2.2.0
+        </p>
+
+      </div>
+
     </div>
+
   </footer>
 
+
   <script>
-    // Initialize Lucide icons
     lucide.createIcons();
   </script>
+
 </body>
 
 </html>
