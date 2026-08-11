@@ -36,39 +36,10 @@ const categories = [
 const popularTools = [
   {
     title: "Attendance Calculator",
-    description: "Calculate your current attendance and target requirements.",
+    description:
+      "Calculate your current attendance and target requirements.",
     href: "/college/attendance-calculator",
     category: "College",
-  },
-  {
-    title: "SGPA Calculator",
-    description: "Calculate your semester grade point average.",
-    href: "/college/sgpa-calculator",
-    category: "College",
-  },
-  {
-    title: "CGPA Calculator",
-    description: "Calculate your cumulative grade point average.",
-    href: "/college/cgpa-calculator",
-    category: "College",
-  },
-  {
-    title: "PC Power Calculator",
-    description: "Estimate computer power consumption and running cost.",
-    href: "/technology/pc-power-calculator",
-    category: "Technology",
-  },
-  {
-    title: "Electricity Cost Calculator",
-    description: "Estimate the electricity cost of appliances and devices.",
-    href: "/home/electricity-cost-calculator",
-    category: "Home",
-  },
-  {
-    title: "Download Time Calculator",
-    description: "Estimate how long a file will take to download.",
-    href: "/technology/download-time-calculator",
-    category: "Technology",
   },
 ];
 

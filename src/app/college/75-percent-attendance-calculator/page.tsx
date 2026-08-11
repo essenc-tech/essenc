@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { useMemo, useState } from "react";
 import { ArrowLeft, RotateCcw } from "lucide-react";
+import Link from "next/link";
 
 import NumberInput from "@/components/calculators/number-input";
 import CalculatorResult from "@/components/calculators/calculator-result";
@@ -10,86 +10,65 @@ import Breadcrumbs from "@/components/tools/breadcrumbs";
 import RelatedTools from "@/components/tools/related-tools";
 import ToolStructuredData from "@/components/seo/tool-structured-data";
 
-const DEFAULT_TARGET = "75";
-
 const faqs = [
   {
-    question: "What is the formula for attendance percentage?",
+    question: "How do I maintain 75% attendance?",
     answer:
-      "Attendance percentage is calculated by dividing classes attended by total classes conducted and multiplying the result by 100.",
+      "To maintain 75% attendance, at least three out of every four classes must be attended. Use the calculator to determine how many classes you can miss based on your current attendance.",
   },
   {
-    question: "How do I calculate 75% attendance?",
+    question: "How many classes do I need to attend to reach 75%?",
     answer:
-      "Enter your classes attended and total classes, then set the target attendance to 75%. The calculator will show your current percentage and how many additional classes you need to attend.",
+      "Enter the number of classes you have attended and the total classes conducted. The calculator will determine how many consecutive classes you need to attend to reach 75%.",
   },
   {
-    question: "How many classes can I miss and maintain 75% attendance?",
+    question: "How many classes can I miss with 75% attendance?",
     answer:
-      "Enter your current classes attended and total classes with a 75% target. The calculator estimates how many additional classes you can miss while remaining at or above the target.",
+      "The number of classes you can miss depends on your current attendance and total classes. Enter your current numbers into the calculator to get the exact result.",
   },
   {
-    question: "Does the attendance calculator store my data?",
+    question: "What happens if my attendance is already above 75%?",
     answer:
-      "The calculation is performed directly in your browser. You do not need to create an account to use the calculator.",
+      "If your current attendance is above 75%, the calculator shows how many additional classes you can miss while remaining at or above 75%.",
   },
 ];
 
-export default function AttendanceCalculatorPage() {
+export default function SeventyFiveAttendanceCalculator() {
   const [attended, setAttended] = useState("");
   const [total, setTotal] = useState("");
-  const [target, setTarget] = useState(DEFAULT_TARGET);
 
   const result = useMemo(() => {
-    const attendedNumber = Number(attended);
-    const totalNumber = Number(total);
-    const targetNumber = Number(target);
-
-    if (
-      attended === "" ||
-      total === "" ||
-      target === ""
-    ) {
+    if (attended === "" || total === "") {
       return null;
     }
+
+    const attendedNumber = Number(attended);
+    const totalNumber = Number(total);
 
     if (
       !Number.isFinite(attendedNumber) ||
       !Number.isFinite(totalNumber) ||
-      !Number.isFinite(targetNumber)
-    ) {
-      return null;
-    }
-
-    if (
-      attendedNumber < 0 ||
       totalNumber <= 0 ||
-      attendedNumber > totalNumber ||
-      targetNumber <= 0 ||
-      targetNumber >= 100
+      attendedNumber < 0 ||
+      attendedNumber > totalNumber
     ) {
       return {
-        error: "Enter valid values before calculating.",
+        error: "Please enter valid attendance numbers.",
       };
     }
 
-    const percentage =
-      (attendedNumber / totalNumber) * 100;
+    const percentage = (attendedNumber / totalNumber) * 100;
 
     let classesToAttend = 0;
     let classesCanMiss = 0;
 
-    if (percentage < targetNumber) {
+    if (percentage < 75) {
       classesToAttend = Math.ceil(
-        (targetNumber * totalNumber -
-          100 * attendedNumber) /
-          (100 - targetNumber)
+        (75 * totalNumber - 100 * attendedNumber) / 25
       );
     } else {
       classesCanMiss = Math.floor(
-        (100 * attendedNumber -
-          targetNumber * totalNumber) /
-          targetNumber
+        (100 * attendedNumber - 75 * totalNumber) / 75
       );
     }
 
@@ -98,23 +77,21 @@ export default function AttendanceCalculatorPage() {
       classesToAttend,
       classesCanMiss,
     };
-  }, [attended, total, target]);
+  }, [attended, total]);
 
   const reset = () => {
     setAttended("");
     setTotal("");
-    setTarget(DEFAULT_TARGET);
   };
 
-  const isValidResult =
-    result && !("error" in result);
+  const validResult = result && !("error" in result);
 
   return (
     <>
       <ToolStructuredData
-        name="Attendance Calculator"
-        description="Calculate college attendance percentage, required classes and classes you can miss."
-        url="https://essenc.tech/college/attendance-calculator"
+        name="75% Attendance Calculator"
+        description="Calculate how many classes you need to attend or can miss to maintain 75% attendance."
+        url="https://essenc.tech/college/75-percent-attendance-calculator"
         category="EducationalApplication"
         faqs={faqs}
       />
@@ -128,7 +105,7 @@ export default function AttendanceCalculatorPage() {
                 href: "/college",
               },
               {
-                label: "Attendance Calculator",
+                label: "75% Attendance Calculator",
               },
             ]}
           />
@@ -139,12 +116,13 @@ export default function AttendanceCalculatorPage() {
             </p>
 
             <h1 className="mt-2 text-3xl font-bold tracking-[-0.025em] text-gray-950 sm:text-4xl">
-              Attendance Calculator
+              75% Attendance Calculator
             </h1>
 
             <p className="mt-4 text-base leading-7 text-gray-600">
-              Calculate your current attendance percentage and find out
-              how many classes you need to attend to reach your target.
+              Find out how many classes you need to attend to reach 75%
+              attendance or how many classes you can miss while staying
+              above 75%.
             </p>
           </div>
         </div>
@@ -156,11 +134,11 @@ export default function AttendanceCalculatorPage() {
             <section className="border border-gray-200 bg-white p-5 shadow-sm sm:p-8">
               <div>
                 <h2 className="text-lg font-semibold text-gray-950">
-                  Calculate your attendance
+                  Calculate 75% attendance
                 </h2>
 
                 <p className="mt-1 text-sm leading-6 text-gray-500">
-                  Enter your current attendance information below.
+                  Enter your current attendance details.
                 </p>
               </div>
 
@@ -171,7 +149,7 @@ export default function AttendanceCalculatorPage() {
                   onChange={setAttended}
                   placeholder="e.g. 42"
                   min={0}
-                  helpText="Classes you have attended."
+                  helpText="Number of classes you attended."
                 />
 
                 <NumberInput
@@ -180,18 +158,7 @@ export default function AttendanceCalculatorPage() {
                   onChange={setTotal}
                   placeholder="e.g. 58"
                   min={1}
-                  helpText="Classes conducted so far."
-                />
-
-                <NumberInput
-                  label="Target attendance (%)"
-                  value={target}
-                  onChange={setTarget}
-                  placeholder="75"
-                  min={1}
-                  max={99.9}
-                  step={0.1}
-                  helpText="For example, 75%."
+                  helpText="Total classes conducted."
                 />
               </div>
 
@@ -215,15 +182,15 @@ export default function AttendanceCalculatorPage() {
                 </div>
               )}
 
-              {isValidResult && (
+              {validResult && (
                 <div className="mt-8 border-t border-gray-200 pt-8">
                   <CalculatorResult
                     label="Current attendance"
                     value={`${result.percentage.toFixed(2)}%`}
                     description={
-                      result.percentage >= Number(target)
-                        ? `You are currently above your ${target}% target.`
-                        : `You are currently below your ${target}% target.`
+                      result.percentage >= 75
+                        ? "Your current attendance is at or above 75%."
+                        : "Your current attendance is below 75%."
                     }
                   />
 
@@ -238,7 +205,8 @@ export default function AttendanceCalculatorPage() {
                       </p>
 
                       <p className="mt-1 text-xs leading-5 text-gray-500">
-                        Additional classes required to reach your target.
+                        Classes you need to attend consecutively to reach
+                        75%.
                       </p>
                     </div>
 
@@ -252,8 +220,8 @@ export default function AttendanceCalculatorPage() {
                       </p>
 
                       <p className="mt-1 text-xs leading-5 text-gray-500">
-                        Additional classes you can miss while maintaining
-                        the target.
+                        Classes you can miss while remaining at or above
+                        75%.
                       </p>
                     </div>
                   </div>
@@ -263,39 +231,39 @@ export default function AttendanceCalculatorPage() {
 
             <aside className="h-fit border border-gray-200 bg-white p-5">
               <h2 className="text-sm font-semibold text-gray-950">
-                Attendance guide
+                75% attendance guide
               </h2>
 
               <div className="mt-4 space-y-4 text-sm leading-6 text-gray-600">
                 <div>
                   <p className="font-medium text-gray-900">
-                    Common target
+                    What does 75% mean?
                   </p>
 
                   <p className="mt-1">
-                    75% is a commonly used attendance target, but your
-                    college may have different rules.
+                    You need to attend at least 75 classes out of every
+                    100 classes conducted.
                   </p>
                 </div>
 
                 <div className="border-t border-gray-100 pt-4">
                   <p className="font-medium text-gray-900">
-                    Calculation
+                    Example
                   </p>
 
                   <p className="mt-1">
-                    Your percentage is calculated from attended classes
-                    divided by total classes.
+                    If 40 classes are conducted, you need to attend at
+                    least 30.
                   </p>
                 </div>
 
                 <div className="border-t border-gray-100 pt-4">
                   <p className="font-medium text-gray-900">
-                    Privacy
+                    Free to use
                   </p>
 
                   <p className="mt-1">
-                    No account is required to perform the calculation.
+                    No account or registration is required.
                   </p>
                 </div>
               </div>
@@ -304,14 +272,18 @@ export default function AttendanceCalculatorPage() {
 
           <article className="mt-14 max-w-3xl">
             <h2 className="text-2xl font-bold tracking-tight text-gray-950">
-              Attendance percentage formula
+              What is 75% attendance?
             </h2>
 
             <p className="mt-4 text-sm leading-7 text-gray-600">
-              To calculate attendance percentage, divide the number of
-              classes attended by the total number of classes conducted
-              and multiply the result by 100.
+              75% attendance means attending three out of every four
+              classes conducted. For example, if your college conducts
+              100 classes, you need to attend at least 75 of them.
             </p>
+
+            <h2 className="mt-10 text-2xl font-bold tracking-tight text-gray-950">
+              75% attendance formula
+            </h2>
 
             <div className="mt-5 border border-gray-200 bg-white p-5">
               <p className="font-mono text-sm leading-6 text-gray-900">
@@ -320,12 +292,12 @@ export default function AttendanceCalculatorPage() {
             </div>
 
             <h2 className="mt-10 text-2xl font-bold tracking-tight text-gray-950">
-              Attendance calculator example
+              Example: 42 out of 58 classes
             </h2>
 
             <p className="mt-4 text-sm leading-7 text-gray-600">
-              Suppose you attended 42 classes out of 58 conducted
-              classes.
+              If you attended 42 out of 58 classes, your current
+              attendance is:
             </p>
 
             <div className="mt-5 border border-gray-200 bg-white p-5">
@@ -335,31 +307,19 @@ export default function AttendanceCalculatorPage() {
             </div>
 
             <p className="mt-4 text-sm leading-7 text-gray-600">
-              Your current attendance would therefore be approximately
-              72.41%.
+              To reach 75%, you would need to attend 6 additional
+              classes without missing another class.
             </p>
 
             <h2 className="mt-10 text-2xl font-bold tracking-tight text-gray-950">
-              How many classes do I need to attend?
+              How many classes can I miss?
             </h2>
 
             <p className="mt-4 text-sm leading-7 text-gray-600">
-              If your current attendance is below the target, the
-              calculator estimates the number of consecutive classes you
-              need to attend without missing another class.
+              If your current attendance is already above 75%, the
+              calculator determines how many additional classes you can
+              miss before your attendance falls below the target.
             </p>
-
-            <p className="mt-4 text-sm leading-7 text-gray-600">
-              For example, if you have attended 42 out of 58 classes and
-              your target is 75%, you need to attend 6 additional
-              classes:
-            </p>
-
-            <div className="mt-5 border border-gray-200 bg-white p-5">
-              <p className="font-mono text-sm leading-6 text-gray-900">
-                (42 + 6) ÷ (58 + 6) × 100 = 75%
-              </p>
-            </div>
 
             <h2 className="mt-10 text-2xl font-bold tracking-tight text-gray-950">
               Frequently asked questions
@@ -367,10 +327,7 @@ export default function AttendanceCalculatorPage() {
 
             <div className="mt-5 divide-y divide-gray-200 border-y border-gray-200">
               {faqs.map((faq) => (
-                <details
-                  key={faq.question}
-                  className="py-5"
-                >
+                <details key={faq.question} className="py-5">
                   <summary className="cursor-pointer text-sm font-semibold text-gray-900">
                     {faq.question}
                   </summary>
@@ -384,7 +341,7 @@ export default function AttendanceCalculatorPage() {
 
             <RelatedTools
               hrefs={[
-                "/college/75-percent-attendance-calculator",
+                "/college/attendance-calculator",
                 "/college/sgpa-calculator",
                 "/college/cgpa-calculator",
                 "/college/marks-percentage-calculator",
